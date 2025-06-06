@@ -14,7 +14,7 @@ local character = Battle.Character.new(team, rank)
 ```
 
 The `team` variable in the above code snippet must be a Team enum value, and `rank` 
-must be a Rank enum value. 
+must be a [Rank enum value](../enums/rank.md). 
 
 You will usually not directly call the function to create a Character, since it 
 will be handled for you in Mob packages. 

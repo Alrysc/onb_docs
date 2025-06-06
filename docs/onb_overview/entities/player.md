@@ -149,8 +149,8 @@ end
 ## Inputs
 
 You can read the player's inputs from their associated Player using the `Player.input_has` 
-function, passing in the input to check for. These are represented by the Input enum 
-values.
+function, passing in the input to check for. These are represented by the [Input enum 
+values](../enums/input.md).
 
 Inputs come in three types:
 

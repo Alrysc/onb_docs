@@ -145,8 +145,8 @@ There are many other handy fields on Entity.
 ### Facing
 
 Every Entity is *facing* either Left or Right. Its Sprite will be drawn facing left 
-or right based on this. An Entity's facing is a `Direction` enum value, but only 
-`Direction.Right` and `Direction.Left` are valid.
+or right based on this. An Entity's facing is a [Direction enum](../enums/direction.md) 
+value, but only `Direction.Right` and `Direction.Left` are valid.
 
 ```lua
 local facing = player:get_facing()
@@ -176,6 +176,37 @@ facing of the Tile it was spawned on. Tiles on the left side of the field have a
 Direction.Right, and Tiles on the right side of the Field have a facing of Direction.Left.
 
 Essentially, their facing will be set so that they face the center of the screen.
+
+### Team
+
+Entities have a Team, which is a [Team enum](../enums/team.md). For Entities which can 
+be hit, this determines what attacks can hit them.
+
+```lua
+local team = player:get_team()
+print("On Red Team?", team == Team.Red)
+```
+
+You can set an Entity's Team with `Entity.set_team`, which takes a Team as input.
+
+```lua
+local artifact = Battle.Artifact.new()
+artifact:set_team(player:get_team())
+```
+
+You won't do this often, because most you will give most Entities a Team when you 
+create them.
+
+!!! warning "Changing Player Teams"
+    You will usually not want to change an Entity's Team after it has spawned. For 
+    Players, this is even more true. A battle ends when one Team has no members left, 
+    so swapping the Player's team might end the battle.
+
+### Default Team
+
+Most Entities are given a Team when you create them, but not all. An Artifact will 
+default to `Team.Other`. Characters and Players created by a Mob package will default 
+to the Team of the Tile they spawn on.
 
 ## Callbacks
 

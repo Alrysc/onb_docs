@@ -7,5 +7,11 @@ This is also partially here so readers can see the date of the last update. When
 next engine update arrives, check here to see if I've updated the docs yet to reflect 
 new changes or new information.
 
+## June 6th, 2025
+* Added [Enums](./onb_overview/enums/index.md) section and some pages
+    - [Directions](./onb_overview/enums/direction.md)
+    - [Input](./onb_overview/enums/input.md)
+    - [Rank](./onb_overview/enums/rank.md)
+
 ## June 5th, 2025
-- First launch
+* First launch

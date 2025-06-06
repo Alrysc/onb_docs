@@ -64,3 +64,8 @@ nav:
           - Obstacle: onb_overview/entities/obstacle.md
           - Character: onb_overview/entities/character.md
           - Player: onb_overview/entities/player.md
+      - Enums:
+          - Overview: onb_overview/enums/index.md
+          - Direction: onb_overview/enums/direction.md
+          - Input: onb_overview/enums/input.md
+          - Rank: onb_overview/enums/rank.md

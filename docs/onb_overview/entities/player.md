@@ -86,7 +86,7 @@ hence the 110 frame time at level 1.
 
 Currently, a Player's base form cannot have a different charge time formula than what is 
 described above. In the future, it will be possible. For now, only a PlayerForm can have 
-a different forumla..
+a different forumla.
 
 ## Built-In CardActions
 
@@ -179,6 +179,9 @@ spell.attack_func = function(self, other)
     end
 end
 ```
+
+Remember that a Player *is a* Character, so `Battle.Character.from(entity)` when 
+`entity` is a Player will return a Character object, not nil.
 
 ### Checking For ScriptedPlayer
 

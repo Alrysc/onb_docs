@@ -224,14 +224,14 @@ local spell = Battle.Spell.new(team)
 local shared = Battle.SharedHitbox.new(spell, 0.033)
 ```
 
+!!! tip "Frames"
+    Remember that 1 in-game frame is roughly equal to 0.0166 seconds. When in doubt, use 
+    `frame_count / 60`. For example, `21/60` as the time if you want it to last for 21 frames.
+
 A SharedHitbox will reference the HitProps and Team of its owner, as well as its `attack_func` and 
 `collision_func`. When spawned, it will stay on the Field and continually attack its Tile 
 until the specified amount of time passes. 
 
-
-!!! tip "Frames"
-    Remember that 1 in-game frame is roughly equal to 0.0166 seconds. When in doubt, use 
-    `frame_count / 60`. For example, `21/60` as the time if you want it to last for 21 frames.
 
 A SharedHitbox will stop attacking before its timer expires if the Entity used to 
 created it is deleted.

@@ -33,8 +33,8 @@ local character = Battle.Character.from_package(id, team, rank)
 ```
 
 !!! warning "Mod Sync"
-    When mods sync for PvP, a library that defines the Character with that ID may 
-    not be shared. Be wary of using this in a context where the function could be 
+    When mods sync for PvP, a library that defines the Character with that ID might 
+    not have been shared Be wary of using this in a context where the function could be 
     called in PvP.
 
 
@@ -55,3 +55,23 @@ a bonus to Busting Level
 3. Characters are made to be able to easily respond to Rank, to allow you to set different 
 stats, colors, behavior, etc. for different versions of the same Character (like V1 and V2
 bosses)
+
+## Type Checking
+
+You can test if an Entity is a Character. The `Battle.Character.from(entity)` function 
+call will return a Character cast of the input Entity if it was a Character, or `nil` 
+if it was not.
+
+```lua
+spell.attack_func = function(self, other)
+    local p = Battle.Character.from(other)
+    if p ~= nil then 
+        print("Damaged a Character")
+    else
+        print("Damaged a different type of Character")
+    end
+end
+```
+
+Remember that a Player *is a* Character, so `Battle.Character.from(entity)` when 
+`entity` is a Player will return a Character object, not nil.

@@ -16,8 +16,8 @@ each one and use the most appropriate.
 
 ## "Scripted" Version
 
-I left out some types of Entity from the above list. For each Entity type, the engine 
-has a second, very similar class:
+I left out some types of Entity from the above list. For each Entity type (and most non-Entity 
+types), the engine has a second, very similar class:
 
 * ScriptedArtifact
 * ScriptedSpell

@@ -21,7 +21,9 @@ of logic to them beyond that is often a mistake, due to their update timing.
 Other Entity types may only update during time freeze if they were spawned 
 during that time freeze, and the next time time freezes they will not update 
 during it. An Artifact, on the other hand, will continue to update during every 
-time freeze. This is perfect for a graphical effect, so it can continue to animate, 
-finish its animation, and remove itself without blocking the players' view for very 
-long. But if you have any logic that affects the battole tied to it, the timing can 
-be thrown completely off by time freeze beginning during it.
+time freeze. 
+
+This is perfect for a graphical effect, so it can continue to animate, finish its 
+animation, and remove itself without blocking the players' view for very long. But 
+if you have any logic that affects the battle tied to it, the timing can be thrown 
+completely off by time freeze beginning during it.

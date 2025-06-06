@@ -1,0 +1,66 @@
+site_name: ONB Modding
+site_url: https://example.com
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Dark mode
+      primary: green
+
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Light mode
+      primary: blue
+
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tabs
+    - navigation.expand
+    - content.code.copy
+    - content.code.select
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+
+nav:
+  - Home:
+      - Introduction: index.md
+      - Changelog: changelog.md
+  - Lua Primer:
+      - Overview: lua/index.md
+      - Comments: lua/comments.md
+      - Variables:
+          - Overview: lua/variables/index.md
+          - Numbers: lua/variables/numbers.md
+          - Strings: lua/variables/strings.md
+          - Booleans: lua/variables/booleans.md
+          - Functions: lua/variables/functions.md
+          - Tables: lua/variables/tables.md
+      - Boolean Expressions: lua/boolean_expressions.md
+      - Comparisons: lua/comparisons.md
+      - Control Structures: lua/control_structures.md
+      - Scope: lua/scope.md
+      - Tables As Objects: lua/objects.md
+      - Useful Functions: lua/useful_functions.md
+  - Engine Objects:
+      - Introduction: onb_overview/index.md
+      - Entities:
+          - Entity: onb_overview/entities/index.md
+          - Artifact: onb_overview/entities/artifact.md
+          - Spell: onb_overview/entities/spell.md
+          - Obstacle: onb_overview/entities/obstacle.md
+          - Character: onb_overview/entities/character.md
+          - Player: onb_overview/entities/player.md

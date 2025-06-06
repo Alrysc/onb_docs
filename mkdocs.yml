@@ -67,5 +67,6 @@ nav:
       - Enums:
           - Overview: onb_overview/enums/index.md
           - Direction: onb_overview/enums/direction.md
+          - Team: onb_overview/enums/team.md
           - Input: onb_overview/enums/input.md
           - Rank: onb_overview/enums/rank.md

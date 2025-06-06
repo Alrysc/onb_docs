@@ -146,6 +146,44 @@ player.special_attack_func = function(self)
 end
 ```
 
+## Inputs
+
+You can read the player's inputs from their associated Player using the `Player.input_has` 
+function, passing in the input to check for. These are represented by the Input enum 
+values.
+
+Inputs come in three types:
+
+1. Pressed, true only on the exact frame a button was pressed down
+2. Held, true every frame the button is down after the first
+3. Released, true on the exact frame a button was let up
+
+Only one of the above types will be `true` at a time for one input.
+
+!!! bug "Frame Step"
+    In v2.0, the tracking for held button inputs continues to advance even while 
+    the engine is paused. This means it's difficult, if not impossible, to read a 
+    Pressed input while frame stepping.
+
+```lua
+if player:input_has(Input.Pressed.Shoot) then 
+    print("Shoot button was pressed this frame")
+end
+```
+
+```lua
+local count = 0
+spell.update_func = function(self)
+    if player:input_has(Input.Held.Right) then 
+        count = count + 1
+        print("Holding Right for "..count.." frames")
+    elseif player:input_has(Input.Released.Right) then 
+        print("Player let go")
+        self:delete()
+    end
+end
+```
+
 ## Forms
 
 Players have access to a form changing mechanic, a recreation of the Cross system 

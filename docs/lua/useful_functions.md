@@ -1,7 +1,8 @@
 # Useful Functions
 
-Some functions are provided by included Lua libraries. You'll find most of the 
-common ones to use here. 
+Useful Lua functions for use in ONB are highlighted here. They still exist 
+in other Lua environments, but this page will especially relate to their use 
+in ONB.
 
 Notice how some, specifically in the math and table libraries, are accessed as 
 if they are parts of a global table named `math` and `table`, respectively.
@@ -26,7 +27,7 @@ print(10 * 10)
 print("Hello World", 10, "Goodbye", {})
 ```
 
-It can be relatively expensive to write to the console output, so you may want 
+It can be relatively expensive to write to the console output, so you will want 
 to make sure no calls to `print` are left in finished code.
 
 ## The math Library
@@ -47,14 +48,14 @@ print(math.min(a, b))
 
 ### math.max
 
-Calling `math.min` will return the larger of two numbers given as input.
+Calling `math.max` will return the larger of two numbers given as input.
 
 ```lua
 local a = 10
 local b = 20
 
 -- 20
-print(math.min(a, b))
+print(math.max(a, b))
 ```
 
 ### math.floor
@@ -103,9 +104,7 @@ print(a)
 
 ### math.random
 
-Generates a random number.
-
-This can be called with either zero, one, or two inputs.
+`math.random` returns a random number. It can be called with either zero, one, or two inputs.
 
 ONB seeds the random number generator for us, so you will never need to call `math.randomseed` 
 (in fact, attempting to do so will fail),

@@ -7,7 +7,7 @@ Your code can only access data if that data is within its scope.
 While not required, please indent your code to indicate a new scope. It'll 
 make it easier to read for you and everyone else, and it'll make it easy to 
 identify each unique scope. You'll see plenty of examples of this through 
-the code exmaples here and everywhere else.
+the code examples here and everywhere else.
 
 ## Blocks
 

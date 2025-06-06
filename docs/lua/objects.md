@@ -4,8 +4,7 @@ Tables can be used to act much like objects in other object oriented languages.
 This is closely related to special syntax you can use for functions that are 
 in a table.
 
-Related reading: 
-* [https://www.lua.org/pil/16.html](https://www.lua.org/pil/16.html)
+Related reading: [https://www.lua.org/pil/16.html](https://www.lua.org/pil/16.html)
 
 ## Calling Functions
 
@@ -50,7 +49,7 @@ table: 0x55f82a449f40
 ```
 or similar.
 
-Despite putting nothing the parentheses, the function call using the colon received the 
+Despite putting nothing in the parentheses, the function call using the colon received the 
 table as input.
 
 ### self

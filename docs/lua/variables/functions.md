@@ -260,19 +260,19 @@ without making it global, this can be a way to achieve that.
     Accesses the "num" index on `t` and adds 1 to it.
 ]]
 function add_1(t)
-    t.sum = t.sum + 1
+    t.num = t.num + 1
 end
 
 --[[
     Accesses the "num" index on `t` and multiplies it by 10.
 ]]
 function mult_10(t)
-    t.sum = t.sum + 1
+    t.num = t.num + 1
 end
 
 
 local my_table = {
-    sum = 0
+    num = 0
 }
 
 -- 0

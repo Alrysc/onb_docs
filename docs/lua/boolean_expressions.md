@@ -26,7 +26,7 @@ single value ("resolve" it).
 
 Booleans are not the only types that can be used in a boolean expression.
 
-A value of any type, except for if the value is `nil` of `false`, will 
+A value of any type, except for if the value is `nil` or `false`, will 
 resolve to `true`. Both `nil` and `false` are treated as `false`.
 
 ```lua
@@ -171,7 +171,7 @@ me use it often when checking Tiles.
 
 ```lua
 --[[
-    Return true if a <> b. 
+    Return true if a < b. 
 
     a and b both must be numbers.
 ]]

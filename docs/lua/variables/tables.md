@@ -126,7 +126,8 @@ table.insert(my_table, 8)
 
 By adding one more parameter between the table to insert into and the value to insert, you can specify 
 the index to insert at, as long as the index specified is at the end of the sequential numerical indexes 
-or is a numerical index that has a value. This will push data at any numerical index after this point up.
+or is a numerical index that has a value. This will push data at any numerical index at and after this 
+point up.
 
 ```lua
 local my_table = {
@@ -318,7 +319,7 @@ print(my_table.string_index)
 ### Sequential Indexes
 
 For certain operations, it will matter that data is stored in sequential integer indexes, 
-starting at 0. A consequence of `nil` being considered empty and nonexistent is that it can 
+starting at 1. A consequence of `nil` being considered empty and nonexistent is that it can 
 break up a table.
 
 ```lua

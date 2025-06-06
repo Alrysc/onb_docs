@@ -54,7 +54,7 @@ else
     print("No Run 2")
 end
 ```
-In the above code, the output will be `Run 2`.
+In the above code, the output will be:
 
 ```
 No Run 1
@@ -90,13 +90,6 @@ end
 Run 1 else
 Run 2
 ```
-
-
-These are the `if` and `if-else` statements. You can branch your logic  
-based on the result of a boolean expression.
-
-If you're unfamiliar with booleans or boolean expressions, see 
-[their page](variables/booleans.md).
 
 ## while
 
@@ -158,7 +151,7 @@ boolean expression.
 
 Note that there is no `do` or `end`, like other loops.
 
-Unlike `while`, `repeat-until` will alwayss run the body at least once. The boolean expression 
+Unlike `while`, `repeat-until` will always run the body at least once. The boolean expression 
 is checked after the body runs instead of before.
 
 ```lua
@@ -265,7 +258,7 @@ loop body. The `nil` print at the end proves that.
 2. The default step is `1` when not provided.
 3. No boolean expression is given for the end of the loop, only a number to stop at.
 4. The loop ends when `i` is > the limit for a positive step, and ends when `i` 
-is > the limit for a negative step.
+is < the limit for a negative step.
 
 The 4th point means the following code will run the body of the `for` loop once:
 

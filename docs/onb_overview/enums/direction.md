@@ -19,6 +19,8 @@ Additionally, the following indexes have function values:
 
 * join
 * reverse
+* flip_x
+* flip_y
 * unit_vector
 
 ## Usage
@@ -82,6 +84,40 @@ Also remember that the above intention can also be done using `Entity.get_facing
 and skipping the reverse. Regardless, it'll be a useful tool, like when you don't have 
 an Entity to get the facing direction of.
 
+### flip_x
+
+`Direction.flip_x` will flip the horizontal part of a Direction and return the result. 
+
+```lua
+local flip = Direction.flip_x(Direction.UpRight)
+```
+
+`flip` in the above code will equal `Direction.UpLeft`.
+
+Note that it is called with a period instead of a colon.
+
+You can and likely will mostly use `Direction.reverse` for this, because most of the time 
+when you want to flip a facing Direction, you can use `Direction.reverse`. An Entity can 
+only face left or right, so there usually won't be a diagonal that you may only want to 
+flip the horizontal on.
+
+### flip_y
+
+`Direction.flip_y` will flip the vertical part of a Direction and return the result. 
+
+```lua
+local flip = Direction.flip_y(Direction.UpRight)
+```
+
+`flip` in the above code will equal `Direction.DownRight`.
+
+Note that it is called with a period instead of a colon.
+
+You can and likely will mostly use `Direction.reverse` for this, because most of the time 
+when you want to flip a facing Direction, you can use `Direction.reverse`. An Entity can 
+only face left or right, so there usually won't be a diagonal that you may only want to 
+flip the vertical on.
+
 ### unit_vector
 
 `Direction.unit_vector` will return a Vector representation of an input Direction. 
@@ -89,3 +125,13 @@ Right becomes (1, 0), UpRight becomes approximately (0.707, -0.707), Left become
 and so on.
 
 You are unlikely to use this very often.
+
+
+## Bitwise Operations
+
+The number values in the indexes on Direction are powers of 2 in the source code. This 
+means you can treat them like flags, where all of them can be "set". However, doing so 
+with this set of values accomplishes nothing. The engine specifically expects exact values, 
+and does not use any bitwise operations when checking these values. Additionally, with 
+values like these, you might expect `Direction.UpRight` to equal `Direction.Up | Direction.Right`, 
+but this is not the case.

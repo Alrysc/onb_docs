@@ -66,6 +66,7 @@ nav:
           - Player: onb_overview/entities/player.md
       - Enums:
           - Overview: onb_overview/enums/index.md
+          - Element: onb_overview/enums/element.md
           - Direction: onb_overview/enums/direction.md
           - Team: onb_overview/enums/team.md
           - Input: onb_overview/enums/input.md

@@ -202,11 +202,28 @@ create them.
     Players, this is even more true. A battle ends when one Team has no members left, 
     so swapping the Player's team might end the battle.
 
-### Default Team
+#### Default Team
 
 Most Entities are given a Team when you create them, but not all. An Artifact will 
 default to `Team.Other`. Characters and Players created by a Mob package will default 
 to the Team of the Tile they spawn on.
+
+### Element
+
+Every Entity has an Element, which is an [Element enum](../enums/element.md) value. 
+See the page on Element for their effects.
+
+You can set an Entity's Element with `Entity.set_element`, and fetch it with 
+`Entity.get_element`.
+
+```lua
+player:set_element(Element.Fire)
+local element = player:get_element()
+-- true
+print(element == Element.Fire)
+```
+
+By default, an Entity's Element is `Element.None`.
 
 ## Callbacks
 

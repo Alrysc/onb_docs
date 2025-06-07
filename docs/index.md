@@ -16,12 +16,13 @@ These docs are in the early stages. So far, you'll find:
 
 1. A summary of Lua features in the [Lua Primer tab](./lua/index.md)
 2. Small usage tips for Entity class objects and summaries of their notable functions
+3. Overviews of some of the C++ enums that have Lua bindings
 
 I still plan to add at least:
 
 1. Pages on the rest of the engine C++ objects that have Lua bindings, similar to 
 the Entity pages
-2. Pages on the values of engine enums
+2. Pages on the rest of the values of engine enums
 3. Overviews of the mod package types
 4. Sections that cover setting up a new mod of each type
 5. Sections dedicated to other tools that can help certain parts of modding and how

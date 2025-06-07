@@ -9,7 +9,8 @@ new changes or new information.
 
 ## June 6th, 2025
 * Added [Enums](./onb_overview/enums/index.md) section and some pages
-    - [Directions](./onb_overview/enums/direction.md)
+    - [Element](./onb_overview/enums/element.md)
+    - [Direction](./onb_overview/enums/direction.md)
     - [Team](./onb_overview/enums/team.md)
     - [Input](./onb_overview/enums/input.md)
     - [Rank](./onb_overview/enums/rank.md)

@@ -122,7 +122,7 @@ An attack that deals Wind damage will deal bonus damage to CursorBody Entities.
 
 !!! tip "Barriers/Auras"
     In BN6, any Wind element attack will remove a Barrier or Aura. This is not an 
-    automatic effect in ONB, since traps are UGC. When making Barrier or Aura effects, 
+    automatic effect in ONB, since they are UGC. When making Barrier or Aura effects, 
     it's recommended to keep this interaction intact.
 
 ### Summon and Plus

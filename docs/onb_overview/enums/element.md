@@ -47,6 +47,10 @@ An attack that deals Fire damage will deal bonus damage to WoodBody Entities. If
 an Entity is standing when they get hit is in the Grass TileState, the TileState will be set 
 to `TileState.None`, and they will take bonus damage.
 
+!!! tip "Grass Burn"
+    In the official games, a Fire attack passing over a Grass Tile would cause the Tile to 
+    revert to normal. This does not happen in v2.0, but will in the future. 
+
 !!! tip "Lava"
     In the official games, FireBody lets you stand on Lava Tiles without taking damage. This 
     is not in v2.0, but will happen in the future.

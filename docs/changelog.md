@@ -7,6 +7,10 @@ This is also partially here so readers can see the date of the last update. When
 next engine update arrives, check here to see if I've updated the docs yet to reflect 
 new changes or new information.
 
+## June 10th, 2025
+* Added more Enum pages
+    - [Playback](./onb_overview/enums/playback.md)
+
 ## June 9th, 2025
 * Added more Enum pages
     - [AudioPriority](./onb_overview/enums/audiopriority.md)

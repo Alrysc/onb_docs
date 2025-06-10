@@ -71,5 +71,6 @@ nav:
           - Team: onb_overview/enums/team.md
           - Input: onb_overview/enums/input.md
           - Rank: onb_overview/enums/rank.md
+          - Playback: onb_overview/enums/playback.md
           - AudioPriority: onb_overview/enums/audiopriority.md
           - AudioType: onb_overview/enums/audiotype.md

@@ -74,5 +74,6 @@ nav:
           - Playback: onb_overview/enums/playback.md
           - AudioPriority: onb_overview/enums/audiopriority.md
           - AudioType: onb_overview/enums/audiotype.md
+          - CardClass: onb_overview/enums/cardclass.md
           - Blocks: onb_overview/enums/blocks.md
           - EntityStatus: onb_overview/enums/entitystatus.md

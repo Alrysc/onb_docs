@@ -10,6 +10,7 @@ new changes or new information.
 ## June 10th, 2025
 * Added more Enum pages
     - [Playback](./onb_overview/enums/playback.md)
+    - [CardClass](./onb_overview/enums/cardclass.md)
     - [Blocks](./onb_overview/enums/blocks.md)
     - [EntityStatus](./onb_overview/enums/entitystatus.md)
 

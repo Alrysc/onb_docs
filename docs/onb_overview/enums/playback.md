@@ -21,8 +21,9 @@ local anim = artifact:get_animation()
 anim:set_playback(Playback.Loop)
 ```
 
-TODO for all: Exact times end func plays, if callbacks play multiple times on 
-loop/bounce
+Calling `Animation.set_state` will revert any Playback setting back to `Playback.Once`.
+If you want to set state and set Playback, be sure to call `Animation.set_state` before 
+`Animation.set_playback`.
 
 ### Once
 

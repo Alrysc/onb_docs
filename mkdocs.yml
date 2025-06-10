@@ -74,3 +74,4 @@ nav:
           - Playback: onb_overview/enums/playback.md
           - AudioPriority: onb_overview/enums/audiopriority.md
           - AudioType: onb_overview/enums/audiotype.md
+          - EntityStatus: onb_overview/enums/entitystatus.md

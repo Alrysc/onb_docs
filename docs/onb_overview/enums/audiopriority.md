@@ -26,7 +26,7 @@ call to `Engine.load_audio`, or an [AudioType enum value](./audiotype.md).
 ### Lowest
 
 `AudioPriority.Lowest` plays on a free channel, but other `Lowest` priority 
-sounds will not play at the same time,
+sounds will not play at the same time.
 
 ### Low
 

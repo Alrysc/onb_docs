@@ -45,6 +45,10 @@ should be on and off.
 
 `Highlight.None` will cause there to be no highlight on the Tile.
 
+## Hidden Tile
+
+Tiles with `TileState.Hidden` as their state will never highlight.
+
 ## Priority
 
 Calls to `Tile.set_highlight` for a particular Tile act as a request. If multiple 

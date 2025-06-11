@@ -72,6 +72,7 @@ nav:
           - Input: onb_overview/enums/input.md
           - Rank: onb_overview/enums/rank.md
           - Shadow: onb_overview/enums/shadow.md
+          - ColorMode: onb_overview/enums/colormode.md
           - Playback: onb_overview/enums/playback.md
           - AudioPriority: onb_overview/enums/audiopriority.md
           - AudioType: onb_overview/enums/audiotype.md

@@ -9,6 +9,7 @@ new changes or new information.
 
 ## June 10th, 2025
 * Added more Enum pages
+    - [Highlight](./onb_overview/enums/highlight.md)
     - [Shadow](./onb_overview/enums/shadow.md)
     - [ColorMode](./onb_overview/enums/colormode.md)
     - [Playback](./onb_overview/enums/playback.md)

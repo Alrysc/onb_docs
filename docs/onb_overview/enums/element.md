@@ -68,6 +68,11 @@ to `TileState.None`, and they will be frozen.
     In the official games, an Aqua attack passing over Lava and Volcano Tiles will set 
     them to normal. This does not happen in v2.0, but will in the future.
 
+!!! tip "Aqua Spell"
+    In v2.0, a Spell whose Element (not HitProps.element) is Aqua will set Volcano Tiles
+    to normal. In future versions, this behavior will be removed and replaced with having 
+    the state change when the Tile is attacked with an Aqua attack.
+
 ### Elec
 
 An Entity with ElecBody takes bonus damage from Wood attacks. 

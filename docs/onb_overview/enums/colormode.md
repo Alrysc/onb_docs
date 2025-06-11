@@ -5,8 +5,8 @@ a Sprite.
 
 The available ColorMode indexes are:
 
-* Additive
 * Multiply
+* Additive
 
 The default is usually `ColorMode.Additive`. Descendent Sprites may sometimes 
 be `ColorMode.Multiply` by default instead.

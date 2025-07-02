@@ -8,16 +8,19 @@ next engine update arrives, check here to see if I've updated the docs yet to re
 new changes or new information.
 
 
-## June 16th, 2025
-* Added more Enum pages
-    - [DefenseOrder](./onb_overview/enums/defenseorder.md)
-    - [LockType](./onb_overview/enums/locktype.md)
+### July 2nd, 2025
+* Added [Lifetimes](./onb_overview/enums/lifetimes.md) enum page
 
-## June 11th, 2025
-* Added page on the [TileState enum](./onb_overview/enums/tilestate.md)
-
-## June 10th, 2025
-* Added more Enum pages
+### June 2025
+* First Launch
+* Added [Enums](./onb_overview/enums/index.md) section and some pages
+    - [Element](./onb_overview/enums/element.md)
+    - [Direction](./onb_overview/enums/direction.md)
+    - [Team](./onb_overview/enums/team.md)
+    - [Input](./onb_overview/enums/input.md)
+    - [Rank](./onb_overview/enums/rank.md)
+    - [AudioPriority](./onb_overview/enums/audiopriority.md)
+    - [AudioType](./onb_overview/enums/audiotype.md)
     - [Highlight](./onb_overview/enums/highlight.md)
     - [Shadow](./onb_overview/enums/shadow.md)
     - [ColorMode](./onb_overview/enums/colormode.md)
@@ -25,19 +28,6 @@ new changes or new information.
     - [CardClass](./onb_overview/enums/cardclass.md)
     - [Blocks](./onb_overview/enums/blocks.md)
     - [EntityStatus](./onb_overview/enums/entitystatus.md)
-
-## June 9th, 2025
-* Added more Enum pages
-    - [AudioPriority](./onb_overview/enums/audiopriority.md)
-    - [AudioType](./onb_overview/enums/audiotype.md)
-
-## June 6th, 2025
-* Added [Enums](./onb_overview/enums/index.md) section and some pages
-    - [Element](./onb_overview/enums/element.md)
-    - [Direction](./onb_overview/enums/direction.md)
-    - [Team](./onb_overview/enums/team.md)
-    - [Input](./onb_overview/enums/input.md)
-    - [Rank](./onb_overview/enums/rank.md)
-
-## June 5th, 2025
-* First launch
+    - [TileState enum](./onb_overview/enums/tilestate.md)
+    - [DefenseOrder](./onb_overview/enums/defenseorder.md)
+    - [LockType](./onb_overview/enums/locktype.md) 

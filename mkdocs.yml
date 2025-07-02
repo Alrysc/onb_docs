@@ -70,6 +70,7 @@ nav:
           - TileState: onb_overview/enums/tilestate.md
           - Direction: onb_overview/enums/direction.md
           - Team: onb_overview/enums/team.md
+          - Lifetimes: onb_overview/enums/lifetimes.md
           - DefenseOrder: onb_overview/enums/defenseorder.md
           - LockType: onb_overview/enums/locktype.md
           - Input: onb_overview/enums/input.md

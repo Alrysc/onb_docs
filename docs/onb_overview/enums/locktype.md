@@ -54,3 +54,33 @@ LockoutGroup will not be performed.
 !!! tip "Missing Info"
     This notice will be removed once I figure out if the CardAction is still queued or if it will 
     only be discarded once it should begin waiting to execute.
+
+### Sequence
+
+Instead of ending when the animation ends, the CardAction will end when all 
+of its Steps have completed. 
+
+```lua
+local action = Battle.CardAction.new(player, "PLAYER_IDLE")
+action:set_lockout(make_sequence_lockout())
+```
+
+You should add Steps afterwards. 
+
+```lua
+local step = Battle.Step.new()
+step.update_func = function(self)
+    self:complete_step()
+end
+
+action:add_step(step)
+```
+
+The above Step will complete itself on its first update. In this example, because 
+it's the only Step, the CardAction will then end. If another Step had been added, 
+that Step would begin updating on the next frame.
+
+!!! tip "Action Immediately Ends"
+    If you set a Sequence lockout but didn't add any Steps, the CardAction 
+    will end immediately. This is a common mistake when setting up Sequence 
+    lockout actions.

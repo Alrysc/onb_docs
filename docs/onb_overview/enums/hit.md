@@ -229,7 +229,7 @@ for official game accuracy, this flag should never be manually applied by your
 code.
 
 !!! bug "Shake After Time Freeze"
-    In v2.0, the shake effect happens after time freeze ends instead of during it. 
+    In v2.0, the shake effect happens again, after time freeze ends.
     This will be fixed in a later version.
 
 ### Pierce

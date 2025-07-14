@@ -67,6 +67,7 @@ nav:
       - Enums:
           - Overview: onb_overview/enums/index.md
           - Element: onb_overview/enums/element.md
+          - Hit: onb_overview/enums/hit.md
           - TileState: onb_overview/enums/tilestate.md
           - Direction: onb_overview/enums/direction.md
           - Team: onb_overview/enums/team.md

@@ -415,3 +415,13 @@ The Blind status lasts 300 frames.
 !!! tip "Missing Info"
     This notice will be removed once I have confirmed where the Blind icon is drawn. Is it 
     on the "head" point of an animation frame, or around the height set by `Entity.set_height`?
+
+### NoCounter
+
+`Hit.NoCounter` is not accessible through the enum, but it can be accessed using its 
+associated value, `2048`. In future versions, this will be fixed. This flag makes an 
+attack unable to counterhit.
+
+If using this, be aware of the benefits of using an enum compared to the raw value, and 
+the risks you take in using the number. Namely, the NoCounter flag may not have this 
+value in future versions, which could impact your code logic. 

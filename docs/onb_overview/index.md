@@ -5,7 +5,7 @@ Battle offers, and give a sort of "tech" overview. I won't go deep into object
 usage in this section, nor will I document every aspect of them. 
 
 You will not find documentation of every engine function in these pages. For that, see here:
-[https://protobasilisk.github.io/OpenNetBattleDocs](https://protobasilisk.github.io/OpenNetBattleDocs).
+[https://paintylux.github.io/OpenNetBattleDocs](https://paintylux.github.io/OpenNetBattleDocs).
 Make sure to click into the `Main Docs`, `Classes & Functions`, and `Code Snippets` tabs.
 
 Those linked docs are incomplete, and some information may be a little inaccurate. Just 

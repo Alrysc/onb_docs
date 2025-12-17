@@ -8,7 +8,7 @@ Card mod packages separately can have an Element set to display an icon. This
 can be programmed to be a different Element than the damage dealt by an attack, 
 and sometimes is in official games.
 
-The Elements available in v2.0 match the ones you'll find in BN6:
+The Elements available in v2.1 match the ones you'll find in BN6:
 
 * None
 * Fire
@@ -41,19 +41,12 @@ An attack that deals Null damage has no special interactions.
 
 ### Fire
 
-An Entity with FireBody takes bonus damage from Aqua attacks.
+An Entity with FireBody takes bonus damage from Aqua attacks and does not trigger damage 
+from Lava Tiles. They also take damage while standing on Sea Tiles, as if it was poison.
 
 An attack that deals Fire damage will deal bonus damage to WoodBody Entities. If the Tile 
-an Entity is standing when they get hit is in the Grass TileState, the TileState will be set 
-to `TileState.None`, and they will take bonus damage.
-
-!!! tip "Grass Burn"
-    In the official games, a Fire attack passing over a Grass Tile would cause the Tile to 
-    revert to normal. This does not happen in v2.0, but will in the future. 
-
-!!! tip "Lava"
-    In the official games, FireBody lets you stand on Lava Tiles without taking damage. This 
-    is not in v2.0, but will happen in the future.
+an Entity is standing when they get hit is in the Grass TileState, they will take bonus damage.
+Attacks made on Tiles in the Grass TileState will cause the Tile to revert to `TileState.None`.
 
 ### Aqua
 
@@ -62,35 +55,34 @@ AquaBody will not slip when moving to a Tile that is in the Ice TileState.
 
 An attack that deals Aqua damage will deal bonus damage to FireBody Entities. If the Tile 
 an Entity is standing when they get hit is in the Ice TileState, the TileState will be set 
-to `TileState.None`, and they will be frozen.
+to `TileState.None`, and they will be frozen. If the attack passes over a Tile in the 
+`TileState.Volcano` state, the Tile will revert to `TileState.None`
 
-!!! tip "Lava and Volcano"
+!!! tip "Lava"
     In the official games, an Aqua attack passing over Lava and Volcano Tiles will set 
-    them to normal. This does not happen in v2.0, but will in the future.
+    them to normal. This does not happen in v2.1, but will in the future.
 
-!!! tip "Aqua Spell"
-    In v2.0, a Spell whose Element (not HitProps.element) is Aqua will set Volcano Tiles
-    to normal. In future versions, this behavior will be removed and replaced with having 
-    the state change when the Tile is attacked with an Aqua attack.
+!!! tip "Sea"
+    Contrary to popular belief, it is not true that all AquaBody Characters submerge 
+    themselves in Sea Tiles as if they were under the Mole or PopUp chip effect. 
+    This is an ability of ToadSoul and certain viruses, not AquaBody.
 
 ### Elec
 
 An Entity with ElecBody takes bonus damage from Wood attacks. 
 
-An attack that deals Elec damage will deal bonus damage to AquaBody Entities. If the Tile 
-an Entity is standing when they get hit is in the Ice TileState, they will take bonus 
-damage. This aspect will be removed in a future version, as the official games do not do that 
-after BN3.
+An attack that deals Elec damage will deal bonus damage to AquaBody Entities and Entities 
+under the Bubble status. If the Tile an Entity is standing when they get hit is in the 
+Sea TileState, they will take bonus damage.
 
 ### Wood
 
-An Entity with WoodBody takes bonus damage from Fire attacks.
+An Entity with WoodBody takes bonus damage from Fire attacks. If the Entity is a 
+Character, they will also heal over time while standing on Grass Tiles. This healing 
+is 1 HP per 20 frames, but slows down to 1 HP per 180 frames if the Character has 
+less than 10 HP left.
 
 An attack that deals Wood damage will deal bonus damage to ElecBody Entities. 
-
-!!! tip "Grass healing"
-    In the official games, WoodBody lets you heal over time while standing on a Grass Tile. 
-    This does not have in v2.0, but will in the future.
 
 ### Sword
 

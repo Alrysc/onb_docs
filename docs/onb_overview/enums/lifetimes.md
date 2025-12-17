@@ -23,22 +23,23 @@ player:register_component(component)
 ```
 
 When talking about a Component, I will often say that it is a Local 
-Component, or a Battlestep Component, etc., indicating which `Liftimes` 
+Component, or a Battlestep Component, etc., indicating which `Lifetimes` 
 was used in its creation.
 
 ## Differences
 
 ### Local
 
-A Local Component's `update_func` runs during an Entity's `update_func`. 
-If the Entity will not update that frame, neither will the Component. 
+A Local Component's `update_func` runs during an Entity's update steps, 
+after their `update_func` runs. If the Entity will not update that frame, 
+such as when time is frozen, neither will the Component.
 
 Usually, an Entity will only update during the battle startup period
 (before the Custom Screen opens) and during the turn while time is not 
 frozen.
 
 Note that an Entity's `update_func` will not be called while the Entity 
-is stunned , but a Local Component will still be updated on that frame.
+is stunned, but a Local Component will still be updated on that frame.
 
 ### Battlestep
 

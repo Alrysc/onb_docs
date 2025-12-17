@@ -20,6 +20,9 @@ The following TileStates are available:
 * Normal
 * Poison
 * Volcano
+* Sea
+* Sand
+* Metal
 
 The default TileState is `TileState.Normal`.
 
@@ -57,7 +60,7 @@ A Tile with the `TileState.Cracked` state will change to `TileState.Broken` when
 a Character which does not have FloatShoes steps off it.
 
 !!! warning "AirShoes"
-    In v2.0, a Character which has AirShoes will also prevent the Tile from breaking.
+    In v2.1, a Character which has AirShoes will also prevent the Tile from breaking.
     This will not be the case in future versions.
 
 !!! tip "Missing Info"
@@ -73,7 +76,7 @@ or `TileState.DirectionUp` states will move an Obstacle or Character in that dir
 steps onto it. Having FloatShoes will exempt the Entity from this movement.
 
 !!! warning "AirShoes"
-    In v2.0, having AirShoes will also prevent the movement. This will not be the case in 
+    In v2.1, having AirShoes will also prevent the movement. This will not be the case in 
     future versions.
 
 The movement is an Involuntary MoveEvent that completes in 3 frames.
@@ -94,15 +97,11 @@ feel more like BN, you should often check for this TileState.
 ### Grass
 
 Tiles with `TileState.Grass` will add damage after a Fire element attack hits an Entity on that 
-Tile. Then, the TileState will revert to `TileState.Normal`.
+Tile. If a Fire element attack is made on the Tile, the Tile will revert to `TileState.Normal`, 
+regardless of whether or not the attack dealt damage. 
 
-!!! tip "Grass Burn"
-    In the official games, a Fire element attack will remove Grass even if no Entity is hit. 
-    This is not the case in v2.0, but will be in future versions.
-
-!!! tip "Grass Heal"
-    In the official games, WoodBody Characters heal slowly over time while standing on a Grass 
-    Tile. This does not happen in v2.0, but will in future versions.
+A WoodBody Character will heal slowly over time while standing on a Grass Tile. The speed of
+healing is 1 HP per 20 frames, or 1 HP per 180 frames while the Character has less than 10 HP.
 
 ### Hidden
 
@@ -116,19 +115,16 @@ change states to any other state. They will be Hidden forever. They also cannot 
 
 Entities standing on Tiles with the `TileState.Holy` state will take reduced damage from attacks.
 
-Damage is halved and rounded down after all DefenseRules have run their `can_block_func`.
+Damage is halved and rounded up after all DefenseRules have run their `can_block_func`.
 
-!!! tip "Damage Rounding and Impact"
-    In v2.0, the round down means that 1 damage attacks will become 0 damage, which is 
-    not BN behavior. This will be changed in a later version.
-
+!!! tip "Damage and Impact"
     Typically, attacks that lack the `Hit.Impact` flag will not have their damage reduced by 
-    Holy Tiles. In v2.0, they will still have their damage reduced.
+    Holy Tiles. In v2.1, they will still have their damage reduced.
 
 !!! tip "'Holy Aura' Strategy"
     A well-known strategy in the official games involves using a LifeAura combined with a 
     Holy panel to require a very high damage value to destroy the Aura. This behavior will 
-    typically not be seen in ONB mods at this time because of the timing of damage reduction
+    typically not be seen in ONB mods as of v2.1 because of the timing of damage reduction
     from Holy Tiles.
 
 ### Ice
@@ -143,29 +139,22 @@ Entities that have FloatShoes or are AquaBody will not slide.
 
 The slide is a MoveEvent that takes 4 frames to complete.
 
-If an Entity is hit by an Aqua attack while on ice, it will be frozen. 
-
-!!! tip "Elec Damage"
-    In v2.0, Ice Tiles grant bonus damage to Elec attacks in the same way Grass does to 
-    Fire. This is behavior from games before BN6, and will be removed in future versions.
+If an attack hits an Ice Tile, it will have `Hit.Freeze` added to it.
 
 ### Lava
 
 A Character or Obstacle that stands on a Tile with the `TileState.Lava` state will be damaged, 
 and then the Tile will revert to `TileState.Normal`. 
 
-If the Entity has FloatShoes, the Lava will not attack it. Because it does not attack, it also 
-does not revert.
+If the Entity has FloatShoes or is FireBody, the Lava will not attack it. Because it does not attack, 
+it also does not revert.
 
-!!! tip "FireBody"
-    In the official games, being FireBody would also avoid Lava attacks. This is not the 
-    case in v2.0, but will be in the future.
+The attack does 50 Fire damage with the Hit.Flash flag.
 
-The attack does 50 Null damage with the Hit.Flash flag.
-
-!!! tip "Fire Lava"
-    In the official games, Lava tends to do Fire damage. This is not the case in v2.0, 
-    but may change in the future.
+!!! tip "Obstacles on Lava"
+    In v2.1, Obstacles have FloatShoes by default. This means they will not be hit by Lava unless 
+    they have their FloatShoes removed. In the future, Obstacles will be able to be hit by Lava by 
+    default.
 
 ### Normal
 
@@ -182,7 +171,7 @@ An Entity with Floatshoes will not be attacked.
 The attack does 1 Null damage with the Hit.Pierce flag.
 
 !!! tip "Damage Timing"
-    The damage timing in v2.0 does not match the official games. This will be made more 
+    The damage timing in v2.1 does not match the official games. This will be made more 
     accurate in future versions.
 
 ### Volcano
@@ -198,8 +187,49 @@ The attack lasts as long as the erupted lava is visible, which is approximately 
 does 50 Null damage, with the Hit.Impact and Hit.Flinch flags.
 
 !!! tip "Volcano Timing"
-    In v2.0, the timing may be different from the original games. It also uses the same 
+    In v2.1, the timing may be different from the original games. It also uses the same 
     time for each Team's Volcano Tiles, which will change in future versions. 
+
+### Sea
+
+Tiles in the `TileState.Sea` state will cause Characters that step onto them to be afflicted 
+with the Root status for 20 frames. If the Entity is AquaBody or has FloatShoes, they will 
+not be affected by this. Obstacles will also not be affected by this.
+
+Elec element attacks on a Sea Tile will do bonus damage. 
+
+Cards with the Aqua element will gain +30 damage if used on a Sea Tile. Afterwards, the 
+Tile will revert to `TileState.Normal`.
+
+FireBody Characters standing on Sea Tiles will take damage over time, as if they were standing 
+on a Poison Tile. The damage is 1 HP per 7 frames, and can be avoided if the Entity has 
+FloatShoes.
+
+Sea Tiles expire and revert to `TileState.Normal` after 16 seconds (960 frames).
+
+!!! tip "ToadSoul"
+    Contrary to popular belief, there is no innate ability for AquaBody Entities to submerge 
+    in Sea Tiles, like ToadSoul does. This is a special ability of ToadSoul.
+
+### Sand
+
+Tiles in the `TileState.Sand` state will cause Characters that step onto them to be afflicted 
+by the Root status for 20 frames. Obstacles are immune to this.
+
+!!! "Wind Bonus Damage"
+    In v2.1, a Wind attack that hits a Sand Tile will revert the Tile to `TileState.Normal`,
+    as well as deal bonus damage. The bonus damage may be incorrectly added, and should not 
+    apply to Sand, but rather the SandPit from BN4. This will be corrected in a later version 
+    if so.
+
+### Metal
+
+Tiles in the `TileState.Metal` state cannot be Cracked or Borken. This means calls like 
+`tile:set_state(TileState.Cracked)` or `tile:set_state(TileState.Broken)` will do 
+nothing if the current state is `TileState.Metal`. 
+
+See [Breaking Metal Tiles](#breaking-metal-tiles) for cases where you may want to Crack 
+a Tile that is Metal anyway, and official examples where this happens.
 
 ## Usage Tips
 
@@ -228,6 +258,19 @@ break it if so.
 ONB will reset the broken Tile timer if you set the state again, which is unlike effects 
 seen in the games. Remember to check if the Tile was already broken before trying, so you 
 don't reset the timer.
+
+#### Breaking Metal Tiles
+
+The Metal TileState prevents cracking and breaking a Tile. This means calls like 
+`tile:set_state(TileState.Cracked)` or `tile:set_state(TileState.Broken)` will do 
+nothing if the current state is `TileState.Metal`. 
+
+Some effects intend to *overwrite* Tiles, which is different flavor from *breaking* 
+them. For example, in BN3, MetalMan, GutsMan, and BassGS don't affect Metal Tiles, 
+but Geddon1 and Geddon2 do. Geddon1 cracks all Tiles, including Metal Tiles; Geddon2 
+turns all Tiles into holes, but Metal Tiles are instead cracked. If you intend for 
+this sort of behavior, you can change the Tile to `TileState.Normal` and then crack 
+and break it, or only crack if it was Metal beforehand. 
 
 #### Making Holes
 

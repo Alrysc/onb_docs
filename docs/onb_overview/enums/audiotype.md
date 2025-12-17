@@ -34,6 +34,8 @@ AudioType has the following indexes:
 * Explode
 * Gun
 * Hurt
+* HurtCharacter
+* HurtObstacle
 * PanelCrack
 * PanelReturn
 * Pause

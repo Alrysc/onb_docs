@@ -18,14 +18,12 @@ It contains the following values:
 * Freeze
 * Drag
 * Blind
+* Confuse
+* Bubble
+* NoCounter
+* Cancel
 
-!!! bug "Bubble"
-    `Hit.Bubble` also exists and is accessible, but it is not complete in 
-    v2.0 and will cause a crash if used.
-
-There is an additional flag that doesn't have an enum to access its value, 
-but we can use its raw associated number. This will be mentioned later in 
-the page.
+[Impact](#impact) and [Cancel](#cancel) are flags with extra special behavior. Be sure to read their sections.
 
 !!! tip "Statuses"
     Many of the flags here inflict statuses. In the future, I may split 
@@ -43,7 +41,17 @@ some examples of using these.
 
 ## Usage
 
-When creating a `HitProps`, use `Hit` enum values when setting its `flags` 
+When creating a `HitProps`, use functions with the names of the flags to add them.
+
+```lua
+local hit_props = HitProps.new()
+    :dmg(10)
+    :impact()
+    :from(player:get_context())
+```
+(With the exception of `drag`, which actually uses the function name `drg`.)
+
+Or, equivalently with the the old constructor, use `Hit` enum values when setting its `flags` 
 field.
 
 ```lua
@@ -51,7 +59,7 @@ local hitprops = HitProps.new(
     -- damage
     10,
     -- flags
-    Hit.None,
+    Hit.Impact,
     -- element
     Element.None,
     -- context
@@ -63,7 +71,8 @@ local hitprops = HitProps.new(
 
 ### Multiple Flags
 
-You will often use `|` to combine multiple flags.
+You will often use `|` to combine multiple flags. This is done mostly in the old 
+HitProps constructor, or when accessing the `HitProps.flags` field.
 
 ```lua
 local hitprops = HitProps.new(
@@ -75,8 +84,44 @@ local hitprops = HitProps.new(
 )
 ```
 
+With the new `HitProps` constructor and its builder pattern, you can represent 
+the above as 
+```lua
+local hit_props = HitProps.new()
+    :dmg(10)
+    :impact()
+    :flinch()
+    :flash()
+    :from(player:get_context())
+```
+
 The above HitProps will make impact, cause the hit target to flinch, and also 
 cause them to flash.
+
+### Status Durations
+
+Some statuses can have a duration set. You can do this using functions from the 
+builder pattern:
+```lua
+local hit_props = HitProps.new()
+    :dmg(10)
+    :impact()
+    :flinch()
+    :flash()
+    :stun(frames(150))
+    :from(player:get_context())
+```
+
+The statuses that can have a duration set, along with their defaults if none is provided, 
+are:
+
+* stun (default 120 frames)
+* freeze (default 150 frames)
+* flash (default 120 frames)
+* root (default 120 frames)
+* blind (default 300 frames)
+* confuse (default 110 frames)
+* bubble (default 150 frames)
 
 ### Checking For Flags
 
@@ -163,7 +208,7 @@ sprite flickers between visible and invisible. Viruses and objects in the offici
 games often strip this flag when hit.
 
 While an Entity is intangible because of this flag, we say that they are "flashing".
-The duration of this is 120 frames.
+The default duration is 120 frames, but can use custom durations.
 
 While flashing, an Entity is intangible. Attacks will not make collision unless they 
 have the `Hit.Pierce` flag. If they don't collide, the attack's `collision_func` will 
@@ -177,24 +222,19 @@ actions for a period of time, and their sprite will flash yellow. CardActions th
 currently in use will immediately end, and any which are queued will be discarded. Objects
 in the official games strip this flag when hit.
 
-Stun lasts 120 frames, but can be cancelled early by an attack that flinches and flashes.
+Stun lasts 120 frames by default, but can use custom durations. 
+
+Stun can be cancelled early by an attack that flinches and flashes, or by an attack that 
+adds Freeze or Confuse. If Drag is active, being hit by another Drag attack will end Stun.
 
 !!! tip "Counter"
-    Being counterhit will also stun, but not using the hitflag. Being stunned in this 
-    way will have a duration of 150 frames instead.
+    Being counterhit will also stun. Being stunned in this way will have a duration 
+    of 150 frames instead, no matter what the original attack had as the duration.
 
 !!! tip "Stun Duration"
     In the official games, stuns often have different durations. For example, Thunder 
     stuns for 90 frames, JudgeMan stuns for 120 frames, and FlashBomb2 stuns for 150 
-    frames. v2.0 does not support different stun durations, but expect it in the future.
-
-    The official games also allow stun duration to tick an extra time whenever you 
-    have an input pressed that frame, so you can "mash out" faster. This is not a 
-    feature in v2.0, but is likely to be added in the future.
-
-!!! tip "Missing Info"
-    This notice will be removed once I confirm whether or not an attack with Hit.Stun 
-    getting a counterhit will stun for 120 frames or 150 frames. 
+    frames. 
 
 ### Root
 
@@ -203,16 +243,12 @@ from moving, and their sprite will flash black. Objects in the official games st
 flag when hit. Another name used for the inflicted status is "immobilze", but I will be 
 using "Root" to match the code.
 
-Root lasts 120 frames, but can be cancelled early if the Entity is intangible, such 
-as after being hit by an attack that flashes.
+Root lasts 120 frames by default, but can use custom durations. It will be cancelled early if the 
+Entity is intangible, such as after being hit by an attack that flashes.
 
 !!! tip "Root Over Holes"
     In the official games, the Root status cannot be applied to an Entity whose Tile is
-    a hole. This is not the case in v2.0. 
-
-!!! tip "Root Duration"
-    In the official games, roots often have different durations. v2.0 does not support 
-    this, but is likely to in the future.
+    a hole. This is not the case in v2.1. 
 
 !!! tip "Missing Info"
     This notice will be removed when I confirm exactly how Root interacts with 
@@ -228,10 +264,6 @@ Shake is automatically applied to hits that happen during time freeze. If aiming
 for official game accuracy, this flag should never be manually applied by your 
 code.
 
-!!! bug "Shake After Time Freeze"
-    In v2.0, the shake effect happens again, after time freeze ends.
-    This will be fixed in a later version.
-
 ### Pierce
 
 `Hit.Pierce` signals that an attack should pierce intangibility. This bypasses the 
@@ -244,7 +276,7 @@ with `Hit.Pierce` to deal damage.
 !!! tip "Other Pierces"
     There are other forms of intangibility found across the BN series. PopUp, from BN3, 
     should be pierced by a flag different from the one that pierces Invis and flashing. 
-    This is not handled in v2.0. Future versions will have more flags and renamed flags 
+    This is not handled in v2.1. Future versions will have more flags and renamed flags 
     for more clarity.
 
 ### Retangible
@@ -279,24 +311,24 @@ of RockCube should be instantly destroyed by an attack with this flag.
     attacks just so happen to have the `Hit.Breaking` flag.
 
     Many other attacks in the series have this flag while not being Break element. See 
-    Sensor (Elec), EraseMan (Cursor), the charge shot used by Charge Cross (Fire), the 
+    Sensor (Elec), EraseMan (Cursor), the charge shot used by ChargeCross (Fire), the 
     DustMan chip (Null), and more.
 
 ### Freeze
 
-`Hit.Freeze` causes an attack to inflict the Freeze status. This will prevent them from 
-taking actions, and their Sprite will be lightened and have ice fragments overlaid. 
+`Hit.Freeze` causes an attack to inflict the Freeze status. This will prevent the target 
+from taking actions, and their Sprite will be lightened and have ice fragments overlaid. 
 CardActions that are currently in use will immediately end, and any which are queued will 
 be discarded.
 
-The freeze status lasts for 150 frames. It can also be ended early by being hit by an 
-attack with the `Hit.Breaking` flag, or an attack which flinches and flashes. It will 
-also end early if it is replaced by the Stun or Drag statuses. Objects in the official 
-games are immune to this status.
+The Freeze status lasts for 150 frames by default, but can use custom durations. It will 
+be ended early when being hit by an attack with the `Hit.Breaking` flag, or an attack which 
+flinches and flashes. It will also end early if it is replaced by the Stun, Bubble, Drag or 
+Confuse statuses. Objects in the official games are immune to this status.
 
-If an attack would freeze, it will not cause Flashing.
+If an attack would Freeze, it will not cause Flashing.
 
-This flag is rarely, if ever, used in the official games. ElementMan Ice and FreezeBomb, 
+This flag is rarely, if ever, used on attacks in the official games. ElementMan Ice and FreezeBomb, 
 from BN2, may be the only possible examples, though BN2 treated the status differently.
 When deciding to use it or not, keep in mind that the Freeze status is a very powerful 
 one, and much stronger than Stun.
@@ -304,11 +336,7 @@ one, and much stronger than Stun.
 !!! tip "Ice Panel Freeze"
     The Freeze status can also be inflicted on an Entity if they take damage from an Aqua 
     attack while standing on an Ice panel. When freeze is inflicted in this way, it 
-    does not use the `Hit.Freeze` flag.
-
-!!! tip "Missing Info"
-    This notice will be removed once I have confirmed which status takes priority if 
-    both Freeze and Stun are inflicted at the same time.
+    does so by adding the `Hit.Freeze` flag to the attack.
 
 ### Drag
 
@@ -318,12 +346,7 @@ queued will be discarded.
 
 If a `Drag` is not defined in the `HitProps`, this flag will effectively do nothing. 
 Using a `Drag` with `Direction.None`, including `Drag.None`, as its movement direction will 
-not cause any of the above described behavior. Using a distance of `0` will also fail to 
-do anything related to `Hit.Drag`. Negative distances will be treated as positive.
-
-!!! bug "Root and Drag"
-    In v2.0, while an Entity is Rooted, they cannot be forced to move, even by Drag. The 
-    movement will continue after Root has ended. This will be fixed in a future version.
+not cause any of the above described behavior. Negative distances will be treated as positive.
 
 While under the Drag status, other statuses and reactions to certain hit flags will be
 continually requeued, only finally applying properly once the status ends. For example, 
@@ -331,11 +354,13 @@ if a Character is under the Drag status, they can be hit by an attack with the F
 Flash, and Stun flags, and they will not flinch, start flashing, or be stunned until the 
 Drag finishes.
 
-!!! tip "Drag Duration"
-    In the official games, Drag will continue to last several frames after movement 
-    stops. This means there is still time after movement stops where statuses are queued 
-    and not yet taking effect, and the Entity could still not move or attack. In v2.0, 
-    this is not the case, but it can be expected in future versions.
+Drag will continue to last several frames after movement stops. This means there is still 
+time after movement stops where statuses are queued and not yet taking effect, and the 
+Entity still cannot move or attack.
+
+If Freeze or Bubble are applied at the same time as Drag, they will not apply, even after 
+Drag ends. If Freeze, Bubble, or Stun are queued during Drag, but on a different frame than 
+the Drag attack, they can be unqeueued by a Drag attack landing before the first Drag ends.
 
 #### Drag Movement
 
@@ -346,6 +371,17 @@ to travel. Movement will be extended if an Entity slides onto an Ice Tile.
 
 ```lua
 local facing = player:get_facing()
+local hit_props = HitProps.new()
+    :dmg(10)
+    :impact()
+    :flinch()
+    :flash()
+    -- Push 1 Tile in the direction of `facing`
+    :drg(Drag.new(facing, 1))
+    :from(player:get_context())
+```
+Or, equivalently with the old constructor, 
+```lua
 local hitprops = HitProps.new(
     10,
     Hit.Impact | Hit.Flinch | Hit.Flash,
@@ -363,7 +399,7 @@ Negative distances will be treated as positive.
 
 The movement from Drag is a MoveEvent which completes in 4 frames, using `ActionOrder.Immediate`. 
 Another movement will be made until the entire distance has been travelled or the next Tile cannot be 
-moved to.
+moved to, at which point the endlag begins.
 
 #### Common Distances
 
@@ -402,26 +438,87 @@ only move 1 space. See AirShot hitting RockCube.
 Players who are Blind will be unable to see Obstacles and Characters which are not on 
 their Team. 
 
-The Blind status lasts 300 frames. 
+The Blind status lasts 300 frames by default, but can use custom durations. 
 
 !!! tip "Blind Enemies"
     In official games, enemies with the Blind status behave differently than normal.
     Another page will have information on how the games tend to handle this.
 
     In ONB, naturally, we need to check for a Blind status and change logic based on it 
-    to have this behavior. In v2.0, there is not yet a way to check for the Blind status, 
-    but there will be in a future version.
+    to have this behavior. This can be done using `Entity.is_blind`.
 
 !!! tip "Missing Info"
     This notice will be removed once I have confirmed where the Blind icon is drawn. Is it 
     on the "head" point of an animation frame, or around the height set by `Entity.set_height`?
 
+### Confuse
+
+`Hit.Confuse` causes the hit Entity to become Confused. An swirling duck animation will be drawn 
+over them. Players who are confused will have their movement directions reversed.
+
+The Confuse status lasts 110 frames by default, but can use custom durations.
+
+If Confuse is applied, it will end Stun, Freeze, or Bubble. These statuses will also overwrite 
+Confuse if they are applied while Confuse is active. If Confuse is applied at the same time 
+as any of these statuses, Confuse will not be applied.
+
+!!! tip "Confused Enemies"
+    In official games,enemies with the Confuse status behave different than normal.
+    Another page will have information on how the games tend to handle this.
+
+    In ONB, naturally, we need to check for a Confuse status and change logic based on it 
+    to have this behavior. This can be done using `Entity.is_confused`.
+
+!!! tip "Missing Info"
+    This notice will be removed once I have confirmed where the Confuse animation is drawn. Is it 
+    on the "head" point of an animation frame, or around the height set by `Entity.set_height`?
+
+### Bubble
+
+`Hit.Bubble` causes the hit Entity to become Bubbled. The Entity will have a bubble drawn around 
+them, and they will float up and down. Players will play their first Flinch animation frame for 
+the duration.
+
+The Bubble status lasts for 150 frames by default, but can use custom durations. It will be 
+ended early by any attack with the `Hit.Impact` flag. If an `Element.Elec` attack hits an 
+Entity while it is Bubbled, the attack will do bonus damage.
+
+If Stun, Freeze, or Drag are applied at the same time, Bubble will not be applied.
+
+!!! tip "Odd BubbleStar"
+    BubbleStar behaves very oddly in the original games, where, when hitting on ice, it will 
+    cause Bubble status only if hitting pointblank. Otherwise, it will freeze instead of bubbling.
+
+!!! tip "BubbleWrap"
+    The BubbleWrap chip in the original games has a similar weakness to Bubble, and can stack 
+    with the Elec weakness. Capcom was smart and made it so BubbleWrap would stop ticking its 
+    regeneration counter if you were Bubbled, to likely prevent cases where the BubbleWrap could
+    come back and cause you to take extraordinary damage while Bubbled.
+
+    This can be replicated in ONB by using `Entity.is_bubbled` to decide whether or not to tick 
+    the regeneration counter.
+
 ### NoCounter
 
-`Hit.NoCounter` is not accessible through the enum, but it can be accessed using its 
-associated value, `2048`. In future versions, this will be fixed. This flag makes an 
-attack unable to counterhit.
+`Hit.NoCounter` makes an attack unable to counterhit. 
 
-If using this, be aware of the benefits of using an enum compared to the raw value, and 
-the risks you take in using the number. Namely, the NoCounter flag may not have this 
-value in future versions, which could impact your code logic. 
+This flag is automatically added to attacks made during time freeze, and to attacks made by a 
+Player performing their `charged_attack_func` or `normal_attack_func`.
+
+### Cancel
+
+`Hit.Cancel` is a special flag, not intended to be used by attacks (but if you do add it to your 
+attacks, there will be no change). The flag is automatically added during to an attack's HitProps 
+during hit checks, and the original HitProps are restored after hit checks. 
+
+If the `Hit.Cancel` flag is still present after defenses, and the attack will apply Stun, Freeze, 
+Bubble, Drag, or Flinch, the Cancel is allowed to process. Otherwise, it will be dropped.
+
+In the case `Hit.Cancel` processes, the hurt Entity's CardActions, action queue, and movement will 
+be cleared and cancelled. 
+
+This is completely normal for Players and Navi-like enemies, and you don't have to do anything about 
+it. But for enemies like viruses, which don't flinch or get their attacks interrupted by any of these 
+flags in the original games, you may want to have a DefenseRule that strips the `Hit.Cancel` flag.
+The `DefenseVirusBody` Defense, created by `Battle.DefenseVirusBody.new()`, will strip the `Hit.Cancel` 
+flag, but any DefenseRule can.

@@ -49,13 +49,17 @@ at the end of each loop. `on_frame` callbacks will also run again each loop, unl
     While looping, an `on_frame` callback set for the keyframe number that is one higher 
     than the Animation's final keyframe may run when the loop happens.
 
+!!! bug "Duplicate Frames"
+    If you have two callbacks registered for the same frame, the second one may run 
+    on a different game frame than the first.
+
 ### Bounce
 
 `Playback.Bounce` will cause an Animation to play until its end, then start playing in 
 reverse.
 
 !!! warning "No Bounce"
-    `Playback.Bounce` may not function properly in v2.0.
+    `Playback.Bounce` may not function properly in v2.1.
 
 ### Reverse
 

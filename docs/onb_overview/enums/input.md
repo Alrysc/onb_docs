@@ -15,10 +15,8 @@ The following indexes are on each of them:
 * Right
 * Up
 * Down
-
-Notice that there are a few inputs we don't yet have access to. Some extra 
-inputs, such as the left and right shoulder buttons, will be exposed in the 
-future.
+* Left_Shoulder
+* Right_Shoulder
 
 Access by using Input, one of the three types, and then one of the inputs.
 

@@ -7,11 +7,11 @@ This is also partially here so readers can see the date of the last update. When
 next engine update arrives, check here to see if I've updated the docs yet to reflect 
 new changes or new information.
 
+### December 16th, 2025
+* Added new sections on [v2.1](v2.1/overview.md), which has been at work for some months
 
-### July 13th, 2025
+### July 2025
 * Added [Hit](./onb_overview/enums/hit.md) enum page
-
-### July 2nd, 2025
 * Added [Lifetimes](./onb_overview/enums/lifetimes.md) enum page
 
 ### June 2025

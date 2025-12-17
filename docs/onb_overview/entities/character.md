@@ -5,7 +5,7 @@ sprite. They also have a "Rank". Deleting them affects final battle results.
 
 ## Creating a Character
 
-Calling `Battle.Obstacle.new(Team, Rank)` will return a new Character object. Like 
+Calling `Battle.Character.new(Team, Rank)` will return a new Character object. Like 
 every other type of Entity, it will need to be spawned on the Field before it will 
 do anything.
 
@@ -43,7 +43,6 @@ local character = Battle.Character.from_package(id, team, rank)
 You will typically use Characters when you want to create a more character-like 
 Entity, something that has movement and attack patterns. Enemies are the most 
 common Character uses.
-
 
 ### Character or Obstacle
 

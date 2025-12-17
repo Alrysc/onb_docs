@@ -3,7 +3,6 @@
 Obstacles are non-Characters which can take damage. Unlike Characters, they 
 do not display their HP, and they don't count towards any battle results.
 
-
 ## Creating an Obstacle
 
 Calling `Battle.Obstacle.new(Team)` will return a new Obstacle object. Like every 
@@ -79,3 +78,8 @@ spell.attack_func = function(self, other)
     end
 end
 ```
+
+## Deleting At 0 Health
+
+When an Obstacle's health is set to 0, either by `set_health` or by taking damage, 
+it will be deleted immediately, even during time freeze.

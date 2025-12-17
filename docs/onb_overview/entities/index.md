@@ -32,8 +32,8 @@ have additional functionality and functions.
 
 Generally, when you *create* an instance of the class, it will be a Scripted version.
 When you are *given* an instance of the class, such as through the return value of an 
-engine function, it will not be. Except when you are "given" a reference in a defined 
-callback on the object, seen in the below [callbacks](#callbacks) section.
+engine function, it will not be. When you define callbacks on the class, the `self` 
+passed in will be the Scripted version, seen in the below [callbacks](#callbacks) section.
 
 When in doubt, use `print` to check the type. The console will tell you if it's a 
 Scripted version or not.
@@ -77,6 +77,11 @@ print(id_1)
 -- This number will be 1 higher than id_1
 print(id_2)
 ```
+
+This can almost be used to determine what Entity is older, except that the ID is divorced 
+from spawn order. An Entity with an older ID could be spawned before after with a newer ID.
+Modders are encouraged to spawn their Entities in the same frame they are created, both 
+to ensure no resources are wasted and to try to keep IDs in a chronological order.
 
 ## Accessible Class Members
 
@@ -166,6 +171,8 @@ Most importantly, you can set an Entity's facing.
 spell:set_facing(player:get_facing())
 ```
 
+An Entity can only face Left or Right. Others values are ignored.
+
 #### Default Facing
 
 When an Entity is created, it has no facing. You should set its facing. If you don't, it 
@@ -194,13 +201,14 @@ local artifact = Battle.Artifact.new()
 artifact:set_team(player:get_team())
 ```
 
-You won't do this often, because most you will give most Entities a Team when you 
+You won't do this often, because you will give most Entities a Team when you 
 create them.
 
 !!! warning "Changing Player Teams"
     You will usually not want to change an Entity's Team after it has spawned. For 
     Players, this is even more true. A battle ends when one Team has no members left, 
-    so swapping the Player's team might end the battle.
+    so swapping the Player's team might end the battle if doing so causes their old 
+    Team to be empty.
 
 #### Default Team
 
@@ -232,7 +240,7 @@ They are often `nil` by default, but can be set to a function which the
 engine will call under certain conditions.
 
 Many callbacks pass `self` in. Expect the same type that the Entity on the 
-lefthand side of the `.` is.
+lefthand side of the `.` is, which may mean the Scripted variants.
 
 Many of these callbacks only exist and can be set on the Scripted class 
 versions.
@@ -333,15 +341,6 @@ player.battle_end_func = function(self)
     print("Battle ended.")
 end
 ```
-
-Currently, this callback only runs for Players. In the future, other Entity types will 
-have access to it.
-
-!!! note "Fact Check Needed"
-
-    This notice will be removed once I check if it only runs for Entities which exist 
-    as the battle is created, which Players are. I also need to check if it runs for 
-    all Characters.
 
 ### can_move_to_func
 

@@ -70,23 +70,72 @@ Anything that would end an active action will also reset the charge.
 
 ### Charge Speed
 
-It takes 110 frames to reach full charge at charge level 1. The higher the Player's charge
+By default, it takes 100 frames to reach full charge at charge level 1. The higher the Player's charge
 level, the less time it will take. Specifically, 10 frames are cut off for each level. The 
 formula would be something like:
 
-`120 - 10 * c`
+`110 - 10 * c`
 
 where `c` is the charge level. Keep in mind that charge level will be a number from 1 to 5, 
 hence the 110 frame time at level 1.
 
-!!! bug "Late Charge Level Effect"
-    In v2.0, charge level will not affect charge speed until the Player has flinched.
+Officially, the charge time formula is slightly different from the above. 10 frames are factored 
+into all charge times, because it takes that long for the charge graphic to appear. So in 
+reality, the engine has a formula more like
+
+`10 + (100 - 10 * c)`
+
+Keep this in mind for scripted charge time formulas.
 
 ### Changing the Formula
 
-Currently, a Player's base form cannot have a different charge time formula than what is 
-described above. In the future, it will be possible. For now, only a PlayerForm can have 
-a different forumla.
+You can determine the time it takes to charge by setting the Player's `charge_time_func`, 
+both on Players and on PlayerForms. The `charge_time_func` is passed a reference to the Player, 
+and a number `level` representing the current Charge level, and expects a `frametime` to be 
+returned. The `level` will be a number from 1 to 5, inclusive. Be sure to cover all cases.
+
+```lua
+local form = player:create_form()
+player.charge_time_func = function(self, level)
+    if level == 1 then
+        return frames(50)
+    end
+
+    if level == 2 then 
+        return frames(40)
+    end
+
+    -- etc.
+end
+
+-- Note that the form receives the Player, not itself, in the parameters, 
+-- so standard practice of using `self` as the first parameter is incorrect.
+form.charge_time_func = function(player, level)
+    if level == 1 then
+        return frames(100)
+    end
+
+    if level == 2 then 
+        return frames(90)
+    end
+
+    -- etc.
+end
+```
+
+Some tips for determining charge times:
+
+* The default charge time is 90 frames at level 1, 80 at level 2, 70 at level 3, 60 at level 4, and 50 and level 5.
+* If your charge time can be based on a formula, use one
+    * For exmaple, the ONB default can be replicated in one line with `return frames(100 - 10 * level)`
+* The official games often do not use linear charge times. For example, HeatCross in BN6 has times 
+ 60, 50, 40, 35, 30, for levels 1-5. Notice how having more levels past 3 has lesser effect.
+* The returned time is applied *after* holding the Shoot button for 10 frames (when the graphic appears)
+    * This means returning `frames(10)` actually means you need to hold B for 20 frames total to be fully charged
+    * Sources on charge times for the official games may or may not count the 10 frames before holding Shoot. 
+    Take this into consideration when taking data from other sources. 
+
+If your mod changes the `Player.charged_attack_func`, consider also changing the `Player.charge_time_func`.
 
 ## Built-In CardActions
 
@@ -161,7 +210,7 @@ Inputs come in three types:
 Only one of the above types will be `true` at a time for one input.
 
 !!! bug "Frame Step"
-    In v2.0, the tracking for held button inputs continues to advance even while 
+    In v2.1, the tracking for held button inputs continues to advance even while 
     the engine is paused. This means it's difficult, if not impossible, to read a 
     Pressed input while frame stepping.
 

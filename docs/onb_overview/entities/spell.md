@@ -108,12 +108,12 @@ ScriptedSpells have an `attack_func` index that your code can define. It will
 run only if and when an attack made by the Spell dealt damage. If it was blocked 
 by a DefenseRule, it will not run. 
 
-It takes the Spell and the Entity that was hit as parameter. Modders have taken 
-to calling the second parameter `other`, so you will often see that name. I will 
-also use it here.
+It takes the Spell, the Entity that was hit, and the DefenseFrameStateJudge as 
+parameter. Modders have taken to calling the second parameter `other`, so you will 
+often see that name. I will also use it here.
 
 ```lua
-spell.attack_func = function(self, other)
+spell.attack_func = function(self, other, judge)
     print("Spell "..self:get_id().." damaged Entity "..other:get_id())
 end
 ```
@@ -126,12 +126,12 @@ could not run if, for example, an Entity is intangible after being hit with an a
 that had the Hit.Flashing flag. If it does run, it will run before the `attack_func`, 
 or may run even if the `attack_func` does not.
 
-It takes the Spell and the Entity that was hit as parameter. Modders have taken 
-to calling the second parameter `other`, so you will often see that name. I will 
-also use it here.
+It takes the Spell, the Entity that was hit as parameter, and the DefenseFrameStateJudge. 
+Modders have taken to calling the second parameter `other`, so you will often see that name. 
+I will also use it here.
 
 ```lua
-spell.collision_func = function(self, other)
+spell.collision_func = function(self, other, judge)
     print("Spell "..self:get_id().." collided with Entity "..other:get_id())
 end
 ```
@@ -166,11 +166,11 @@ and the `attack_func` at the same time.
 ```lua
 local hitbox = Battle.Hitbox.new(team)
 
-local function collision_func(self, other)
+local function collision_func(self, other, judge)
     print("Hitbox "..self:get_id().." collided with Entity "..other:get_id())
 end
 
-local function attack_func(self, other)
+local function attack_func(self, other, judge)
     print("Hitbox "..self:get_id().." damaged Entity "..other:get_id())
 end
 

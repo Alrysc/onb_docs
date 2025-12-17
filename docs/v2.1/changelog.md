@@ -71,6 +71,7 @@
     * See [Recommended Upgrades: Suggest GFX Spawn](./recommended_upgrades.md#suggest-gfx-spawn)
 * Hitbox/Spell `attack_func` and `collision_func` now receive an optional last parameter DefenseFrameStateJudge object, mainly for use with the above two features
 * Obstacles can now be affected by Lava, but you must remove their FloatShoes, which are added by default
+* Blocks are now sorted when loaded, which fixes a desync where the order of blocks could be wrong when sent to a remote player
 
 There are also new server-related features. 
 

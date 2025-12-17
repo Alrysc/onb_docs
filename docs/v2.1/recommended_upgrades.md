@@ -215,7 +215,7 @@ end
 It's recommended to have your attacks listen to the DefenseFrameStateJudge.
 
 ### Access to Shoulder Buttons
-v2.1 adds the `right_shoulder` and `left_shoulder` inputs to be read by mods. You 
+v2.1 adds the `Right_Shoulder` and `Left_Shoulder` inputs to be read by mods. You 
 can perform some logic based on these, and you might have some mods that were getting 
 especially crowded using only the Special button. 
 

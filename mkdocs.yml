@@ -57,6 +57,7 @@ nav:
       - Useful Functions: lua/useful_functions.md
   - Engine Objects:
       - Introduction: onb_overview/index.md
+      - Field: onb_overview/field.md
       - Entities:
           - Entity: onb_overview/entities/index.md
           - Artifact: onb_overview/entities/artifact.md
@@ -85,3 +86,8 @@ nav:
           - CardClass: onb_overview/enums/cardclass.md
           - Blocks: onb_overview/enums/blocks.md
           - EntityStatus: onb_overview/enums/entitystatus.md
+  - v2.1 Changes:
+      - Full Changelog: v2.1/overview.md
+      - Changelog: v2.1/changelog.md
+      - Recommended Upgrades: v2.1/recommended_upgrades.md
+      - Breaking Changes: v2.1/breaking_changes.md

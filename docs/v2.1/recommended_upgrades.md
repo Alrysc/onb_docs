@@ -1,161 +1,136 @@
-# v2.1
-v2.1 pulls some fixes, changes, and features from ahead in the repo's history, and even from 
-Jamesking's work on the upcoming v2.5, with extra help from James in devising and revising 
-the new systems in play that weren't in v2.5 yet.
+# Recommended Mod Upgrades
+The vast majority of mods do not need upgrades to work in the new version. However, there 
+are many new features available that modders will want to use to improve their mods, including 
+things that were previously impossible. 
 
-This is a mostly non-breaking update. Very, very few mods should be broken, but some
-behavior has been affected, and new behavior is now possible that you may want to implement. 
-Read the changelog, then see [Recommended Mod Upgrades](#recommended-mod-upgrades).
+Some of these recommendations are to warn about behavioral changes, which may affect how a mod 
+works, but most likely leave it working. Other recommendations are for new things that can be added 
+to mods to either make certain logic safer, or improve mods with new functionality. These 
+are separated by section.
 
-There is one breaking change, which affects a feature used by extremely few mods. See 
-[breaking changes](#breaking-changes).
+This page also covers usage suggestions and examples for new features.
 
-If any mods have broken, ping me (Alrysc) on Discord and I'll see about patching. 
+## New Feature Possibilities
 
-## Changelog
-* Folder and pack can be sorted using the Pause button (default Enter) 
-* Folders can be copied with CTRL+C while editing
-* Sea, Metal, and Sand TileStates added
-    * Sea boosts damage of Aqua cards used on them, doubles Elec damage taken while on one, and roots Entities that step on them
-    * Metal cannot be cracked or broken
-    * Sand roots Entities that step on them and doubles Wind damage taken while on one
-* Charge times are recalculated even without flinching
-    * Player.charge_time_func and PlayerForm.charge_time_func can be used reliably as a result
-* Changed parameters and names of charge time functions, see [Charge Time](#charge-time)
-* Wood element Entities will heal over time while standing on a Grass Tile
-* Fire element Entities will not take damage from Lava
-* Elec damage is no longer doubled on Ice
-* Grass Tiles are now removed by Fire, even if damage was not dealt to any Entities
-* Holy Panel damage rounds up
-* Movement no longer acts as if endlag is 1 frame when it's 0 frames
-* Drag lasts the correct amount of time now
-* Pressing inputs during Stun and Freeze will cause them to end more quickly
-* Status interactions with each other are overall more accurate
-    * Some may cancel others, and will do so correctly
-* Form changing will cancel various statuses
-* Flinching can no longer be cancelled by using a card
-* TFC cannot be performed until 10 frames into time freeze
-* Charge is no longer used up when performing TFC
-* Anger/FullSync now only consumed by boostable cards
-* Time freeze actions show damage and modifiers
-* Health turns red at low HP
-* Mugshots no longer bounce
-* Freedom battles always send data to the server, and turns can no longer end while the last enemy is dying
-* Freedom battles read input during time freeze
-* Card long descriptions are prioritized over short descriptions in battle
-* Time Freeze actions can be marked uncounterable
-* Time Freeze actions now call action_end_func
-* Field.find_nearest_characters returns an ordered table
-* Battle.AlertSymbol.new is available
-* Access to Left_Shoulder and Right_Shoulder inputs
-* Hit.NoCounter hitflag, prevents attack from countering
-* Hit.Confuse hitflag, adds Confuse for 110 frames
-* All Entities can use battle_start_func and battle_end_func
-* Access to Character.can_attack
-* Access to Entity.set_counter_frame_range
-* Access to Entity. is_stunned, is_frozen, is_rooted, is_blind, is_confused, and is_dragged
-* Access to Player.is_charging
-* Default turn duration is now correctly 512 frames (~8.5 seconds, down from 10 seconds)
-* Access to `Battle.get_turn_count`, which returns the current turn number. 0.0 initially, then increases by 1.0 every Battle Start banner
-* Access to many functions related to Custom Gauge
-    * `Battle.get_cust_gauge_value`, which returns a double with value `0.0` at empty gauge and `1.0` or higher at full, as a percentage completion of the gauge
-    * `Battle.get_cust_gauge_time`, which returns a number in frames for the current gauge time (e.g. 256.0 when gauge is half full with default duration)
-    * `Battle.get_cust_gauge_max_time`, which returns a number in frames for the current max gauge time (e.g. 512.0 for default time)
-    * `Battle.get_default_cust_gauge_max_time`, which returns the default gauge time, 512.0 frames
-    * `Battle.set_cust_gauge_time`, takes in a frametime (like frames(256)) to set current gauge time to
-    * `Battle.set_cust_gauge_max_time`, takes in frametime to set max time to (current time is automatically readjusted to match the percentage of total time it had before, e.g. max time 512 and current time 256 will have current time 100 if you set max time to 200)
-    * `Battle.reset_cust_gauge_to_default`, sets max time to default time
-* Form changing resets emotions
-* New HitProps constructor and builder pattern
-* HitProps builder pattern allows custom durations for Stun, Freeze, Blind, Root, Confuse, and Flash
-* HitProps can have a second element, `element2`
-* Mob can skip rewards screen with `Mob:no_rewards()`
-* Obstacles are now deleted immediately when their health reaches 0, even during time freeze
-* Entity can register new Battle.UIComponent, which acts as a SpriteNode
-    * Add child nodes to draw to the screen in battle, anchored at 0,0 screen coordinates
-    * Position is absolute and does not get flipped by perspective flip
-* `Esc` behavior is now the Panic sequence, which is activated by pressing `Esc` three times
-    * This means exiting battle is now three `Esc` presses instead of one
-* Panic can be used to disconnect from a server
-* The engine can now play SFX when dealing damage
-    * `Entity:use_default_hurt_sfx(bool)`, determines whether or not to use the default hurt SFX, true by default
-    * `Entity:set_hurt_sfx(audio)`, changes the Entity's hurt sound. Default is based on Entity type, must call `Entity:use_default_hurt_sfx(true)` for it to play
-        * `nil` is a valid value, to use no sound
-* `DefenseFrameStateJudge` now determines whether or not a sound will play, and what sound to play, when damage is dealt
-    * `DefenseFrameStateJudge:set_hit_sfx(audio)` changes the final SFX to play. Adopts the victim Entity's hurt sfx if one is provided.
-        * `nil` is a valid value, to use no sound
-    * `DefenseFrameStateJudge:hint_spawn_gfx(bool)` adds a hint to the DefenseFrameStatJudge whether or not to spawn a hit graphic effect.
-        * Because it's a hint, it may or may not be respected
-    * `DefenseFrameStateJudge:hint_spawn_gfx()` - used in hitbox attack + collision func to read if the Entity should obey the hint to spawn image graphics or not.
-* Hitbox/Spell `attack_func` and `collision_func` now receive an optional last parameter DefenseFrameStateJudge object so you can read this hint and respond to it.
-For most people, this means you don't have to provide hit sounds in most of your mods anymore, or handle playing them, unless you specifically want a custom hit sfx.
+### Let Engine Handle Hit Sounds
+v2.1 allows many mods to remove the hit sounds included in their mods. This has technically 
+always been true because of the [`AudioType` enum](../onb_overview/enums/audiotype.md), but 
+now the engine can take full control and even play different hit sounds depending on what 
+an attack hit.
 
-There are also new server-related features. 
-* Battle rewards can be granted, with limited functionality around card rewards
-* HUD can be swapped with the PET icon
-* Can send email to clients
-* Can play PET ring SFX
-* New Sprite API lets servers draw sprites on the client's screen
-* Can assert asset type when providing assets
-* Card mod packages received by client are added to mod partition for the duration of the session
-* Battle results no longer have `runaway` bool, now use `reason` enum
+For most people, this means you don't have to provide hit sounds in most of your mods anymore, 
+or handle playing them, unless you specifically want a custom hit SFX different from the default.
 
-## Breaking Changes
+Note that the SFX will only play when the attack is not blocked, it does more than 0 damage, 
+and it has the `Hit.Impact` flag. This should not be concerning and is likely what is intended 
+by all mods regardless, as hit sounds act like this in Battle Network, too. If you want to play a 
+hit sound and you know it doesn't fall under these situations, you may still want to call 
+`Engine.play_audio`. Otherwise, you should be able to safely remove it and associated audio 
+files from your mods.
 
-There is one breaking change, which affects very few mods. The vast majority of mods 
-will not be affected by any breaking changes.
+#### Default Hurt Sounds
+This is all because Entities now have "default hurt sounds", which will play after the `Spell.attack_func`
+runs, if damage from an attack was not blocked, was > 0, and the attack had the `Hit.Impact flag`. 
+There are three different defaults:
 
-### Charge Time
+* The sound you hear when damaging an Obstacle in BN (default for all Obstacles)
+* The sound you hear when damaging an enemy in BN (default for all other Entities)
+* The sound you hear when the player is damaged in BN (default for only the local Player)
 
-In v2.0, the `Player.charged_time_table_func` or `PlayerForm.calculate_charge_time_func` 
-could be used to affect charge times. These two functions have been renamed, and their 
-parameters were changed to now pass in the Player and the charge level, rather than just 
-the level. You will need to make the following changes:
+This means that, in PvP, you will hear a different sound when you get damage than you hear when 
+you damage the enemy player.
 
-* Rename `charged_time_table_func` to `charge_time_func`, no `d`!
-* Change the parameters to `(self, level)`, e.g. `player.charge_time_func = function(self, level)`
-* Rename `calculate_charge_time_func` to `charge_time_func`, same as Player
-* Change the parameters to `(player, level)`, e.g. `form.charge_time_func = function(player, level)`
+#### Change Default Sound
+You can change the default hurt sound for an Entity. This requires two function calls: one to 
+set the new sound to use, and one to toggle whether or not your custom sound should be used.
 
-Before:
 ```lua
-local form = player:create_form()
-player.charged_time_table_func = function(level)
-    return frames(100 - 10 * level)
+local my_hurt_sfx = Engine.load_audio(_folderpath.."hurt.ogg")
+function player_init(player)
+    player:use_default_hurt_sfx(false)
+    player:set_hurt_sfx(my_hurt_sfx)
 end
-
-form.calculate_charge_time_func = function(level)
-    return frames(80 - 5 * level)
+```
+This also works with the `AudioType` enum.
+```lua
+function player_init(player)
+    player:use_default_hurt_sfx(false)
+    -- Player will play the Explode sound whenever damaged
+    player:set_hurt_sfx(AudioType.Explode)
 end
 ```
 
-After:
+You can also use `nil` as the hurt SFX to play no sound.
+
+#### Override Damage Sound For Defense
+Sometimes, you may want a DefenseRule to play a sound when the Entity gets hit. Often 
+a hit sound won't play, because a DefenseRule usually blocks attacks, but this isn't 
+always the case. Maybe your DefenseRule allows the user to still be damaged, but it creates 
+some extra effect and you want a different hurt sound. 
+
+This can be done using the judge's new `set_hit_sfx` function. This can override the 
+sound that the Entity has set for their hurt SFX to play your own.
+
 ```lua
-local form = player:create_form()
--- No more 'd' in name or 'table', extra parameter
-player.charge_time_func = function(self, level)
-    return frames(100 - 10 * level)
+local my_hit_sfx = Engine.load_audio(_folderpath.."hit.ogg")
+local defense = Battle.DefenseRule.new(10, DefenseOrder.CollisionOnly)
+defense.can_block_func = function(judge, attacker, defender)
+    judge:set_hit_sfx(my_hit_sfx)
 end
 
--- Name matches Player's function, extra parameter
-form.charge_time_func = function(player, level)
-    return frames(80 - 5 * level)
+player:add_defense_rule(defense)
+```
+The above DefenseRule will override the SFX to play after damage, so that instead of using 
+the hurt Entity's set SFX, it will use the one set here. An `AudioType` enum value also works.
+```lua
+local defense = Battle.DefenseRule.new(10, DefenseOrder.CollisionOnly)
+defense.can_block_func = function(judge, attacker, defender)
+    judge:set_hit_sfx(AudioType.Explode)
+end
+
+player:add_defense_rule(defense)
+```
+You can also use a value of `nil` to prevent any sound from playing. 
+
+A DefenseRule that runs after yours may set the SFX again, which will overwrite your change. 
+The attacker has the final say in the damage sound, however. 
+
+!!! tip "'hit' vs. 'hurt'"
+    Make sure to notice that `Entity` uses `hurt` in `Entity.use_default_hurt_sfx` and 
+    `Entity.set_hurt_sfx`, but `DefenseFrameStateJudge` uses `hit` in `DefenseFrameStateJudge.set_hit_sfx`.
+
+#### Override Damage Sound For Attack
+Sometimes, you may want an attack you make to play a different sound. You can still call 
+`Engine.play_audio` in your `attack_func`, but this will play the sound at the same time as the 
+enemy hit sound. 
+
+Attacks have the final say in what SFX will play, since they can run logic after every other 
+possible change was made. Because the `DefenseFrameStateJudge` is now passed into the `attack_func` 
+and `collision_func` of Spells and other hitboxes, you can use its new `set_hit_sfx` function to 
+determine what sound will play when damage is dealt. For example, 
+```lua
+local my_hit_sfx = Engine.load_audio(_folderpath.."hit.ogg")
+spell.attack_func = function(self, other, judge)
+    judge:set_hit_sfx(my_hit_sfx)
+end
+```
+The above code will cause your own SFX to play. You can similarly use an `AudioType` enum value instead.
+```lua
+spell.attack_func = function(self, other, judge)
+    -- Play the explosion sound
+    judge:set_hit_sfx(AudioType.Explosion)
 end
 ```
 
-For other examples using these functions, see [Custom Charge Times](#custom-charge-times).
+`nil` is also a valid value and will cause no sound to play. You might use this also in cases where
+you want your non-Impact attack to make a hit sound, so you used `Engine.play_audio`, and want to 
+ensure no other sound plays at the same time.
 
-## Recommended Mod Upgrades
-No mods should be broken by this update (except for mods that affected charge time), but 
-modders now have an opportunity to add more to their mods. Some of these recommendations 
-are to warn about behavioral changes, but mod updates are not necessarily required.
+!!! tip "'hit' vs. 'hurt'"
+    Make sure to notice that `Entity` uses `hurt` in `Entity.use_default_hurt_sfx` and 
+    `Entity.set_hurt_sfx`, but `DefenseFrameStateJudge` uses `hit` in `DefenseFrameStateJudge.set_hit_sfx`.
 
-Other recommendations are for new things that can be added to mods to either make 
-certain logic safer, or improve mods with new functionality.
-
-### New Things You May Want To Add
-
-#### Custom Charge Times
+### Custom Charge Times
 v2.1 fixes charge time calculation, which means Player mods are free to have unique 
 charge times. If you do not add one, the mod will continue to use the default 
 provided by the engine.
@@ -208,7 +183,38 @@ Some tips for determining charge times:
 
 If your mod changes the `Player.charged_attack_func`, consider also changing the `Player.charge_time_func`.
 
-#### Access to Shoulder Buttons
+### Suggest GFX Spawn
+In the original games, there are some Defenses which allow graphical effects to spawn even though 
+the attack was blocked, and others that don't. Spells can simply spawn graphics wherever and whenever 
+they want, but you can now have your DefenseRules suggest that they don't spawn a graphic. This is 
+not foolproof, as mods needs to read this and decide to listen, but it allows for the option. 
+
+This comes from `DefenseFrameStateJudge.hint_spawn_gfx`. If called, it will return `true` or `false`, 
+based on whether or not it has been suggested that GFX should or shouldn't spawn. If called by passing 
+in a boolean instead, it will set the return value to be given later.
+
+```lua
+local defense = Battle.DefenseRule.new(10, DefenseOrder.CollisionOnly)
+defense.can_block_func = function(judge, attacker, defender)
+    -- Ask attackers to not spawn GFX
+    judge:hint_spawn_gfx(false)
+end
+
+player:add_defense_rule(defense)
+```
+With this DefenseRule, you might have an attacker like so:
+```lua
+spell.collision_func = function(self, other, judge)
+    -- Stop if the judge has asked not to spawn GFX
+    if not judge:hint_spawn_gfx() then return end
+
+    -- Put code for spawning hit effect here
+end
+```
+
+It's recommended to have your attacks listen to the DefenseFrameStateJudge.
+
+### Access to Shoulder Buttons
 v2.1 adds the `right_shoulder` and `left_shoulder` inputs to be read by mods. You 
 can perform some logic based on these, and you might have some mods that were getting 
 especially crowded using only the Special button. 
@@ -216,7 +222,7 @@ especially crowded using only the Special button.
 Note that the shoulders are typically used to open the Custom screen. Your logic may 
 be performed at the same time the Custom screen opens if the Custom Gauge is full.
 
-#### Safer card_action_event
+### Safer card_action_event
 In v2.0, if you used `Character.card_action_event`, you had no way of knowing whether 
 or not the Card would be added or would execute, or even could execute. You might 
 have queued the action multiple times, causing it to happen more times than intended. 
@@ -242,13 +248,13 @@ button and queue the action multiple times, or could even press it while stunned
 action happen immediately when stun ends. Guarding the `card_action_event` with `can_attack` 
 and `is_moving` prevents this.
 
-#### Hit.NoCounter
+### Hit.NoCounter
 You can now make attacks that can never counterhit. In v2.0, this was able to be done using 
 the raw value of the enum (2048), but now the enum value is accessible using `Hit.NoCounter`. 
 If you used `2048`, consider updating to use the enum value, which is guaranteed to always 
 work in the future.
 
-#### Check Confusion and Blind
+### Check Confusion and Blind
 In the original games, enemies would often act differently than normal if they were blind 
 or confused. Modders can now check for these conditions with `Entity.is_confused` and 
 `Entity.is_blind`.
@@ -267,25 +273,26 @@ containing the player when using Shooting Buster so he never hits them.
 
 You might consider following this for your mods to be closer to the source material.
 
-#### `battle_end_func` and `battle_start_func`
+### `battle_end_func` and `battle_start_func`
 All Entities can use the `battle_start_func` and `battle_end_func` now. This is most likely 
 to come up where modders have wanted to remove Spells from the Field when battle ends, or 
 prevent enemies from spawning new attacks, which is common for official game behavior. 
 
-#### TimeFreeze action_end_func
+### TimeFreeze action_end_func
 In v2.0, time freeze CardActions did not call their `action_end_func`. This has been fixed. 
 If your mods had certain cleanup that must be performed at the end, this could be a good 
 place to move things.
 
-#### TimeFreeze Uncounterable
+### TimeFreeze Uncounterable
 Time freeze actions can now be marked as uncounterable, using `CardMeta.counterable = false`.
 
 Try not to abuse it too much. This is typically used for time freezes that happen as a 
 result of some condition, like Guardian being hit, or an elemental attack appearing 
 on the field and triggering ElementTrap, or a boss changing phases. Mods that have these 
-sorts of actions likely already wanted to be uncounterable, and now they can be.
+sorts of actions likely already wanted to be uncounterable, and now they can be. Generally 
+recommended to go with `skip_time_freeze_intro` being true.
 
-#### set_counter_frame_range
+### set_counter_frame_range
 Instead of toggling counter on and off, you can now set a range of animation keyframes
 for which an Entity will be counterable. This is based on the current animation.
 
@@ -307,10 +314,13 @@ action.execute_func = function(self, actor)
     end)
 end
 ```
-Note that this is done specifically in the `execute_func`, which is the first time the 
-user has entered the action animation.
+Note that this example is done specifically in the `execute_func`, which is the first time the 
+user has entered the action animation, but you can still do this elsewhere. Don't forget to 
+treat the incoming `user` for the `card_create_action` as if it may be different from the `actor`.
+You should be targeting the `actor`, given in the parameters for the `execute_func` or returned 
+from `CardAction.get_actor`.
 
-#### Breaking Metal Tiles
+### Breaking Metal Tiles
 The Metal TileState prevents cracking and breaking a Tile. This means calls like 
 `tile:set_state(TileState.Cracked)` or `tile:set_state(TileState.Broken)` will do 
 nothing if the current state is `TileState.Metal`. 
@@ -322,12 +332,12 @@ turns all Tiles into holes, but Metal Tiles are instead cracked. If you intend f
 this sort of behavior, you can change the Tile to `TileState.Normal` and then crack 
 and break it, or only crack if it was Metal beforehand. 
 
-#### Engine Alert Symbol
+### Engine Alert Symbol
 v2.1 adds access to `Battle.AlertSymbol.new()`, which creates an alert symbol, the 
 double exclamation point icon that appears when taking weakness damage or performing 
 TFC. If your mods have created one for themselves, you may consider using this instead. 
 
-#### Turn Counting
+### Turn Counting
 In v2.0, some mods tried to create attacks or special effects that activated only 
 once per turn. This can now be done much more easily and with fewer holes by the 
 new `Battle.get_turn_count`.
@@ -339,7 +349,6 @@ after exiting card select.
 ```lua
 player.last_known_turn = 0.0
 player.allow_special_attack = true
-
 
 -- Set allow_special_component true if it's a new turn
 local special_component = Battle.Component.new(player, Lifetimes.Scene)
@@ -370,7 +379,7 @@ player.special_attack_func = function(self)
 end
 ```
 
-#### New HitProps Constructor
+### New HitProps Constructor
 HitProps can now be constructed and modified using a builder pattern.
 This is best done using the new constructors, `HitProps.new()` or 
 `HitProps.new(context)`.
@@ -402,7 +411,7 @@ Drag, you can decide to do
 hit_props:drg(Drag.new(user:get_facing(), 1))
 ```
 
-#### Use element2
+### Use element2
 With the [new HitProps builder pattern](#new-hitprops-constructor), you can now 
 add secondary elements.
 
@@ -421,7 +430,7 @@ This can be read with `hit_props.elem2`.
 Be sure to take `elem2` into account in your DefenseRules, which should react the same 
 to primary and secondary element.
 
-#### Use Status Durations
+### Use Status Durations
 With the [new HitProps builder pattern](#new-hitprops-constructor), you can now 
 add durations to certain statuses.
 
@@ -444,10 +453,22 @@ The following statuses can be given durations in this way:
 * root (default 120 frames)
 * blind (default 300 frames)
 * confuse (default 110 frames)
+* bubble (default 150 frames)
 
-### Behavior Changes (Be Aware)
+### CustGauge Manipulation
+It's now possible to read and change the Custom Gauge's duration and speed.
 
-#### Using Hit.Drag
+* `Battle.get_cust_gauge_value`, which returns a double with value `0.0` at empty gauge and `1.0` or higher at full, as a percentage completion of the gauge
+* `Battle.get_cust_gauge_time`, which returns a number in frames for the current gauge time (e.g. 256.0 when gauge is half full with default duration)
+* `Battle.get_cust_gauge_max_time`, which returns a number in frames for the current max gauge time (e.g. 512.0 for default time)
+* `Battle.get_default_cust_gauge_max_time`, which returns the default gauge time, 512.0 frames
+* `Battle.set_cust_gauge_time`, takes in a frametime (like `frames(256)`) to set current gauge time to
+* `Battle.set_cust_gauge_max_time`, takes in frametime to set max time to (current time is automatically readjusted to match the percentage of total time it had before, e.g. max time 512 and current time 256 will have current time 100 if you set max time to 200)
+* `Battle.reset_cust_gauge_to_default`, sets max time to default time
+
+## Behavior Changes (Be Aware)
+
+### Using Hit.Drag
 v2.1 makes Drag interactions much closer to source material. This reveals some 
 possible mistakes modders have made with Drag attacks. Below are some nuances that 
 may have been unknown before, and that modders should reconsider for attacks that 
@@ -456,14 +477,14 @@ inflict Drag:
 2. Drag and Freeze are fully incompatible. If any attacks have Hit.Freeze and Hit.Drag, they 
    will never cause Freeze. If you have done this, consider removing Hit.Freeze.
 
-#### Drag Endlag
+### Drag Endlag
 The Drag status now properly keeps Entities from acting for over 20 frames after movement 
 stops. This is the Drag endlag, during which `Entity.is_moving` and `Entity.is_sliding` 
 will return false, which was not the case in v2.0.
 
 See [safer card_action_event](#safer-card_action_event).
 
-#### Movement Endlag
+### Movement Endlag
 In v2.0, all movement had at least one frame of endlag. Endlag of `frames(0)` and 
 `frames(1)` were identical. With v2.1, this is no longer the case. 
 
@@ -480,7 +501,7 @@ etc.
 If you intended to have an extra frame on each Tile, you can use `frames(1)` as the 
 endlag to replicate how `frames(0)` looked and moved in v2.0.
 
-#### Spawning Hit Effects
+### Spawning Hit Effects
 Some Spells will spawn hit effects in their `collision_func` or `attack_func`. Some 
 mods spawn the effect on the Spell's Tile; others spawn on the hit Entity's Tile. 
 Spawning on the Spell's Tile has always been less correct, because the Spell is moving 
@@ -492,7 +513,7 @@ Because of the [movement endlag change](#movement-endlag), this may be more noti
 If a mod spawned the hit effect on the target's Tile, no change is necessary. If they 
 spawned on the Spell's Tile, consider changing this.
 
-#### Deleting Moving Attacks
+### Deleting Moving Attacks
 Some Spells will delete themselves in their `collision_func`. If the Spell is moving, 
 it may have changed Tiles before the `collision_func` ran. This means it could have 
 been drawn on the next Tile even though it hit on the previous Tile, because Entities 
@@ -506,7 +527,7 @@ or if you call `hide` when you called `delete`, or if you call `hide` in the `de
 this will never happen to your Spells. If you do not do any of these, consider adding one.
 My recommendation is to call `Entity.hide` in your `delete_func`.
 
-#### find_nearest_characters Fix
+### find_nearest_characters Fix
 In v2.0, `Field.find_nearest_characters` did not actually return an ordered list, so the 
 first item was not necessarily the nearest Character. This is fixed by v2.1. 
 
@@ -516,12 +537,12 @@ no change is needed; you may notice that you are now actually getting the neares
 If you have avoided `find_nearest_characters` to use your own solution, or because it did 
 not work as expected, consider updating to now use it.
 
-#### Fire and Grass
+### Fire and Grass
 Fire element attacks now remove Grass even if they did not hit an Entity. Mods that 
 handled this interaction on their own in v2.0 can now remove their implementation, as
 the engine will handle it.
 
-#### Grass, Lava Effects
+### Grass, Lava Effects
 Grass now heals Wood Entities. If your Player mods have implemented a sort of grass heal, 
 you can now remove this and rely on the engine's. If you do not, your healing effect will
 stack with the engine's.
@@ -530,7 +551,7 @@ Fire Entities are no longer harmed by Lava Tiles. If you have added FloatShoes t
 Player mods only to recreate this interaction in v2.0, you can now remove the FloatShoes 
 and remain immune to Lava.
 
-#### New TileStates
+### New TileStates
 Because of the new TileStates (Sea, Metal, Sand), mods that attempted to change Tiles 
 on the Field to any TileState (e.g. a mod that picks random TileStates each time) 
 may want to be updated to support the additions.
@@ -538,3 +559,16 @@ may want to be updated to support the additions.
 Servers that send data for encounters tend to use hardcoded values based on the TileState 
 enum (ezencounters does this). Any use of `TileState.Hidden` on your server encounters 
 may now appear as Sea Tiles. See the repo for new values to adjust to.
+
+### Double Hit Sound
+Because [the engine now plays default SFX when damage is dealt](#let-engine-handle-hit-sounds), 
+mods that called `Engine.play_audio` in their attacks' `attack_func`s are likely playing 
+a second sound on top of the default. 
+
+If you have a special sound to play that won't be used by the engine by default, use the 
+DefenseFrameStateJudge that's now passed into the `attack_func` to set the sound with 
+`DefenseFrameStateJudge.set_hit_sfx`, and remove the `play_audio` call.
+
+Otherwise, if your sound is the sound that the engine will play anyway, remove your 
+`play_audio` call. You can also remove the SFX audio file from the mod if it's not used 
+elsewhere.

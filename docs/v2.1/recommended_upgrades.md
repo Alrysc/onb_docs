@@ -425,9 +425,9 @@ local hit_props = HitProps.new()
     :elem2(Element.Sword)
     :from(user:get_context())
 ```
-This can be read with `hit_props.elem2`.
+This can be read with `hit_props.element2`.
 
-Be sure to take `elem2` into account in your DefenseRules, which should react the same 
+Be sure to take `element2` into account in your DefenseRules, which should react the same 
 to primary and secondary element.
 
 ### Use Status Durations

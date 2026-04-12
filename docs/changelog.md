@@ -7,7 +7,10 @@ This is also partially here so readers can see the date of the last update. When
 next engine update arrives, check here to see if I've updated the docs yet to reflect 
 new changes or new information.
 
-### December 16th, 2025
+### April 11th, 2026
+* Updated [v2.1 changelog](v2.1/changelog.md) for v2.1.3 and v2.1.4
+
+### December 2025
 * Added new sections on [v2.1](v2.1/overview.md), which has been at work for some months
 
 ### July 2025

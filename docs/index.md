@@ -4,7 +4,7 @@ These docs contain information on creating mods for the Open Net Battle (ONB) en
 an engine recreating the mechanics of MegaMan Battle Network 6 where all content 
 is user generated.
 
-The current version of Open Net Battle is v2.1.2. Many pages on this site were written 
+The current version of Open Net Battle is v2.1.4. Many pages on this site were written 
 when v2.0a was the latest version, and need to be updated where needed to refer to v2.1. 
 Certain things may be different in the next large engine update, and I'll be updating 
 information here to reflect changes when they happen. 

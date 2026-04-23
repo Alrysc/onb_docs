@@ -39,13 +39,13 @@ level tends to speed up charging)
 10. Links to other guides written by the community
 
 Unrelated to modding, there's also a WIP [Playing](./playing/index.md) tab, 
-which can walk people through setting up, the menues that are available, and 
+which can walk people through setting up, the menus that are available, and 
 a few other advanced usage tips, such as detailing command line flags.
 
 A few of these pages are still empty and are there as a skeleton. I plan to 
 at least:
 
-1. Fill in missing and empty pages for all menues
+1. Fill in missing and empty pages for all menus
 2. A page on command line flags
 3. Images for using modsites
 4. FAQ related to setup

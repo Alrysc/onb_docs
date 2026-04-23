@@ -1,7 +1,7 @@
 # Playing Open Net Battle
 
 This section of the website goes over setting up ONB, as well as things such as 
-downloading mods, joining servers, configuring controls, and navigating menues. 
+downloading mods, joining servers, configuring controls, and navigating menus. 
 Beyond that, there are also some guides on some and understanding what 
 community lingo is around, such as what people mean when they say your mods 
 aren't whitelisted, or what a "Special" is, 

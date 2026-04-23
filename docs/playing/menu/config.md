@@ -29,7 +29,7 @@ The `My Keyboard` and `My Controller` options will let you edit your controls,
 but first, you can read about what all of the controls are for. If you've 
 played any BN games on mGBA, these controls will be familiar.
 
-Controls are split between overworld/battle and menues. The overworld/battle 
+Controls are split between overworld/battle and menus. The overworld/battle 
 controls are: 
 
 * **Move Up/Down/Left/Right** - Moves you. Arrow keys by default.

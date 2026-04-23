@@ -29,7 +29,7 @@ You can also reach the `Exit` button you see in the corner, which will close
 the menu. You can also close it with the Cancel button (X by default).
 
 Head to each of these pages to see what these screens can do. By default, you 
-can navigate this and other menues using the arrow keys, X to cancel, and Z to 
+can navigate this and other menus using the arrow keys, X to cancel, and Z to 
 confirm and enter a menu. 
 
 I recommend going to the [Config](./config.md) screen first, so you can change 

@@ -7,6 +7,9 @@ This is also partially here so readers can see the date of the last update. When
 next engine update arrives, check here to see if I've updated the docs yet to reflect 
 new changes or new information.
 
+### April 23rd, 2026
+* Added [Playing](./playing/index.md) tab and some pages. Most are incomplete.
+
 ### April 11th, 2026
 * Updated [v2.1 changelog](v2.1/changelog.md) for v2.1.3 and v2.1.4
 

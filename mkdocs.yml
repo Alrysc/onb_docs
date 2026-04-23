@@ -34,6 +34,7 @@ markdown_extensions:
   - pymdownx.superfences
   - admonition
   - pymdownx.details
+  - attr_list
 
 nav:
   - Home:
@@ -91,3 +92,22 @@ nav:
       - Changelog: v2.1/changelog.md
       - Recommended Upgrades: v2.1/recommended_upgrades.md
       - Breaking Changes: v2.1/breaking_changes.md
+  - Playing:
+      - Introduction: playing/index.md
+      - Download:
+          - Where to Download: playing/download/downloading.md
+          - Downloaded Folder: playing/download/folders.md
+      - Mods:
+          - Loading New Mods: playing/loading_mods.md
+          - Deleting Mods: playing/deleting_mods.md
+          - Modsite: playing/modsite.md
+      - Menu:
+          - Start Screen: playing/menu/start_screen.md
+          - Start Menu: playing/menu/start_menu.md
+          - ChipFolder: playing/menu/chip_folder.md
+          - (Unfinished)Navi: playing/menu/navi.md
+          - (Unfinished)E-Mail: playing/menu/email.md
+          - (Unfinished)KeyItem: playing/menu/key_item.md
+          - (Unfinished)MobSelect: playing/menu/mob_select.md
+          - Config: playing/menu/config.md
+          - (Unfinished)Netplay: playing/menu/netplay.md

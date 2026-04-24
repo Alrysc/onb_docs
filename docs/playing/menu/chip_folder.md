@@ -26,8 +26,8 @@ You can select these options using the UI Up/Down keys, and then Confirm.
 
 ### Edit
 
-Most importantly, you can click `EDIT` to reach the Folder Edit screen. We'll 
-get back to that later.
+Most importantly, you can click `EDIT` to reach the Folder Edit screen. This 
+has [its own page](./folder_edit.md), which you can read later.
 
 ### Equip
 

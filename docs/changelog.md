@@ -8,6 +8,10 @@ next engine update arrives, check here to see if I've updated the docs yet to re
 new changes or new information.
 
 ### April 23rd, 2026
+* Added [Playing](./playing/index.md) pages on more menu options
+* Added a page explaining [whitelists](./playing/whitelists.md)
+  
+### April 23rd, 2026
 * Added [Playing](./playing/index.md) tab and some pages. Most are incomplete.
 
 ### April 11th, 2026

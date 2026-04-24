@@ -105,9 +105,12 @@ nav:
           - Start Screen: playing/menu/start_screen.md
           - Start Menu: playing/menu/start_menu.md
           - ChipFolder: playing/menu/chip_folder.md
-          - (Unfinished)Navi: playing/menu/navi.md
-          - (Unfinished)E-Mail: playing/menu/email.md
-          - (Unfinished)KeyItem: playing/menu/key_item.md
-          - (Unfinished)MobSelect: playing/menu/mob_select.md
+          - Navi: playing/menu/navi.md
+          - E-Mail: playing/menu/email.md
+          - KeyItem: playing/menu/key_item.md
+          - MobSelect: playing/menu/mob_select.md
           - Config: playing/menu/config.md
           - (Unfinished)Netplay: playing/menu/netplay.md
+          - Folder Edit: playing/menu/folder_edit.md
+          - Navi Cust: playing/menu/navi_cust.md
+      - Whitelists: playing/whitelists.md

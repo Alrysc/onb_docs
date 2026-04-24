@@ -83,7 +83,7 @@ Press Confirm to Run it.
 
 Your changes are saved to disk now. You'll then be prompted to leave or stay 
 on this screen. Select whichever you prefer with the UI Left/Right buttons 
-and Confirm (or Cancel to automatically chose NO, staying on the screen).
+and Confirm (or Cancel to automatically choose NO, staying on the screen).
 
 ![Quit prompt](../images/navi_cust/quit_prompt.png){ align=center }
 

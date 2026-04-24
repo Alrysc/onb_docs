@@ -24,3 +24,5 @@ mail on join.
 
 You can press the Confirm button to read mail, or the UI Up/Down/Left/Right
 buttons to scroll through your mail. 
+
+![Reading E-Mail](../images/mail/reading_mail.png){ align=center }

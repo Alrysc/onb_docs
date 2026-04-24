@@ -30,7 +30,7 @@ permissions for other files. These things will need to be fixed separately.
 ## Controls and Controllers
 
 ONB is missing default controller controls as of v2.1. You'll have to wait to 
-use your controller until you can make it to the Config menu, where you can 
-set it up.
+use your controller until you can make it to the [Config menu](./config.md), 
+where you can set it up.
 
 For now, you'll have to make do with keyboard.

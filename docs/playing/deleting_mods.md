@@ -10,8 +10,10 @@ on the mod package type.
 ## 2. Delete the Extracted Folder
 
 ONB will create a folder from the ZIP mod package by extracting it. You need to 
-find and delete this folder (it'll be in the same `mods` folder as the ZIP, 
-with the same name as the ZIP). 
+find and delete this folder. It'll be in the same `mods` folder as the ZIP, 
+with the same name as the ZIP, inside the `staged` folder. For example, if your 
+Player mod's file is named "my_mod", then you should see `mods/players/my_mod.zip`. 
+Delete that. Then, delete `mods/players/staged/my_mod/`, the folder.
 If you don't, ONB will create a ZIP from the mod package's folder on boot. 
 
 If you got caught by ONB regenerating the ZIP, make sure you also delete the 

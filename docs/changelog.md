@@ -7,14 +7,13 @@ This is also partially here so readers can see the date of the last update. When
 next engine update arrives, check here to see if I've updated the docs yet to reflect 
 new changes or new information.
 
-### April 23rd, 2026
-* Added [Playing](./playing/index.md) pages on more menu options
-* Added a page explaining [whitelists](./playing/whitelists.md)
-  
-### April 23rd, 2026
-* Added [Playing](./playing/index.md) tab and some pages. Most are incomplete.
+### November 2026
+* Updated [v2.1 changelog](v2.1/changelog.md) for v2.1.5 up to v2.1.8 beta
+  * v2.1.8 section will be updated as it develops
 
-### April 11th, 2026
+### April 2026
+* Added [Playing](./playing/index.md) tabs and pages pages on more menu options
+* Added a page explaining [whitelists](./playing/whitelists.md)
 * Updated [v2.1 changelog](v2.1/changelog.md) for v2.1.3 and v2.1.4
 
 ### December 2025

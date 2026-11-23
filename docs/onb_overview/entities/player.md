@@ -54,6 +54,67 @@ player:set_charge_level(current_charge + 10)
 print(player:get_charge_level())
 ```
 
+### Cust Level
+
+Players have a cust level, which is an integer ranging from 2 to 8. By default, 
+it is 5. It represents the maximum number of cards drawn from your folder to 
+the card select screen.
+
+As of v2.1.8, this stat works slightly differently from others. It features 
+an upcoming system that supports stat modifiers, which make it easier to 
+temporarily modify stats without reverting to incorrect values.
+
+In this system, there is a concept of a "base" stat, and the "final" stat 
+that takes into account all active modifiers. The base cust level can be 
+accessed through using `Player.get_base_cust_level`, and it can be set using 
+`Player.set_base_cust_level`.
+
+```lua
+local current_cust = player:get_base_cust_level()
+
+-- 5, default
+print(current_cust)
+player:set_base_cust_level(1)
+current_cust = player:get_base_cust_level()
+
+-- 2, because the minimum is 1
+print(current_cust)
+```
+
+The final stat, after modifiers, can be checked using `player:get_cust_level()`.
+
+```lua
+local base_cust = player:get_base_cust_level()
+local final_cust = player:get_cust_level()
+
+-- 5, default
+print(base_cust)
+-- 5, no modifiers yet
+print(final_cust)
+
+-- Writes a modifier that adds 10 to the cust stat, searchable under the given ID
+player:write_stat_mod(Stat.cust, "MyCustModID", 10)
+base_cust = player:get_base_cust_level()
+final_cust = player:get_cust_level()
+
+-- 5, unmodified
+print(current_cust)
+-- 8, because of the max stat being 8
+print(final_cust)
+
+player:write_stat_mod(Stat.cust, "MyCustModID_2", -9)
+final_cust = player:get_cust_level()
+-- 6, because the base 5 + modifier of +10 and then -9 from this modifier
+print(final_cust)
+```
+
+Prefer using stat modifiers for temporary and removable effects, such as 
+ChargeCross adding bonuses to the stat, or CustBug taking away from the stat. 
+Use the base stats for more permanent changes that apply once, such as 
+NaviCust parts or the starting stats of a Player mod.
+
+A future page will detail stat modifiers more deeply.
+
 ## Charging
 
 While holding the Shoot button, a Player will begin to charge. There are three states 
@@ -65,8 +126,8 @@ to charging:
 
 While in the third state, releasing the Shoot button will call the `charged_attack_func`.
  
-It takes 110 frames to reach full charge. The Player cannot charge during another action.
-Anything that would end an active action will also reset the charge. 
+The Shoot button must be held for 110 frames to reach full charge. The Player cannot charge 
+during another action.Anything that would end an active action will also reset the charge. 
 
 ### Charge Speed
 
@@ -85,7 +146,9 @@ reality, the engine has a formula more like
 
 `10 + (100 - 10 * c)`
 
-Keep this in mind for scripted charge time formulas.
+Keep this in mind for scripted charge time formulas. The amount of time you hold Shoot to 
+fully charge takes your forumula's result + 10 frames, because you only start charging 
+10 frames in.
 
 ### Changing the Formula
 
@@ -129,10 +192,11 @@ Some tips for determining charge times:
 * If your charge time can be based on a formula, use one
     * For exmaple, the ONB default can be replicated in one line with `return frames(100 - 10 * level)`
 * The official games often do not use linear charge times. For example, HeatCross in BN6 has times 
- 60, 50, 40, 35, 30, for levels 1-5. Notice how having more levels past 3 has lesser effect.
+60, 50, 40, 35, 30, for levels 1-5. Notice how having more levels past 3 has lesser effect.
 * The returned time is applied *after* holding the Shoot button for 10 frames (when the graphic appears)
     * This means returning `frames(10)` actually means you need to hold B for 20 frames total to be fully charged
-    * Sources on charge times for the official games may or may not count the 10 frames before holding Shoot. 
+    * Sources on charge times for the official games may or may not count the 10 frames before the charge 
+    graphic appears. 
     Take this into consideration when taking data from other sources. 
 
 If your mod changes the `Player.charged_attack_func`, consider also changing the `Player.charge_time_func`.
@@ -249,6 +313,11 @@ end
 ```
 
 This creates a PlayerForm object. These will be detailed in another page.
+
+## Chip Charge
+
+The chip charges from BN4-6 can be created using `CardChargeAbility`, which will 
+be detailed in another page. 
 
 ## Type Checking
 

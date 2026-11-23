@@ -1,4 +1,4 @@
-# Changelog
+## Changelog (v2.0 -> v2.1.4)
 * Folder and pack can be sorted using the Pause button (default Enter) 
 * Folders can be copied with `CTRL+C` while editing
 * Sea, Metal, and Sand TileStates added
@@ -133,3 +133,135 @@ There are also new server-related features.
 * Battle results no longer have `runaway` bool, now use `reason` enum
 * Tile custom property `shadow` can be set to `Never` to never have that tile be drawn in shadow
 * Start and stop song functions
+
+## v2.1.5
+* New title screen music, "Open Source Savior", an original composition by Mannerek with compositional assistance from TheMaverickProgrammer
+* Drag can now never queue behind itself
+* Fixed an issue around actions popping incorrectly
+* TFC now correctly consumes x2 boosts
+* Entities that were spawned late in the frame and attacked when spawned will correctly execute their attack
+* Hidden Tiles are invisible again
+* Returning an invalid `CardAction` when its meta says it will freeze time will now cause time freeze to begin
+* Adjusted some music loop behavior
+* New `--chatbox` command line arg to test textboxes. Example usage: `BattleNetwork.exe --chatbox --dialog my_script.txt`
+* Session Emotion is correctly initialized when entering battle
+* Fixed issue where using a card could sometimes let you use a time freeze card behind it before the first card executed
+* Fixed `make_frame_data` crashes when given incorrect types
+* Fixed issue where two simultaneous actions, where only one is time freeze, could cause time freeze to be skipped
+* When multiple time freeze actions are used simultaneously, they now execute in separate action chains, and actionability is checked before the next chain begins
+* `Entity.erase` no longer prevents the BattleScene from noticing an Entity was deleted (no more battle softlock)
+* Card UI is now visible during time freeze, until the time freeze counter window ends
+* Unloaded folder cards are reloaded when a load package signal is received from servers
+* Folder paste now checks for exact card ID
+
+## v2.1.6
+* Updated Lua version to 5.4.6
+* Added Netplay Delay config option and related battle screen widgets
+  * Delay can go from 1f to 12f
+  * Lowest delay between players is selected. Make sure you and your opponent agree on delay when changing it!
+  * Default delay is 5f. Can select "Any" option to default to opponent's delay option
+* Improved responsiveness and speed of downloads between peers and server
+* Local PvP is now possible on remote servers. Play online with your friends nearby!
+* Matchmaking scene now prevents you from battling yourself
+* New ping widget in netplay. Smaller and more informative.
+* Debug mode now draws current battle frame in all battle scenes. `BattleNetwork.exe -d` to see it.
+* Regression fix: Non-edge Hidden Tiles are hidden again
+* Fixed possible crashes when a server connection times out while battle packages are downloading or while in battle
+* Fixed a potential desync related to Sea Tiles
+* Fixed a crash related to shaders on certain platforms
+
+### Servers
+* Servers are now told when a client exits the battle scene, separate from when the client finishes fighting.
+  * Set a callback to listen to this with `Net:on("battle_exit", function)`
+    * The event has a `player_id` index
+  * Results should still be given with `Net:on("battle_results", function)`, just as in earlier versions
+
+## v2.1.7
+* **The mods folder layout has changed!** 
+  * Mods now extract into a `staged` folder inside of their mod folder. For example, `mods/my_mod.zip` now extracts to `mods/staged/my_mod` instead of `mods/my_mod`
+* Changed how mods are hashed, which should keep hashes consistent across platforms
+* New `CardHandle` class available for Lua scripting. With it, you can replicate things like BN6 HeatCross giving +50 damage to all Fire chips, or Otenko giving you a steadily-increasing damage boost. See [Recommended Upgrades](./recommended_upgrades.md) for examples.
+* New `PropsMod` enum for use with `CardHandle`
+* When your opponent in PvP uses a realtime card, you will now see the name and damage of the card, just like BN6
+* New filter menu available in the pack. This is only available for pack view, not folder view.
+  * After opening the sort menu in the pack, press the shoulder buttons to switch to the filter menu.
+  * You can filter by specific code, specific ID, and you can filter out certain card classes or elements
+  * You can filter out cards that are not in a server whitelist
+  * There is a "Reset" option to remove all filters
+  * Servers with whitelists automatically turn on a filter to hide cards that are not whitelisted
+* You can now edit a folder even if it contains cards that are not in a server's whitelist
+* Cards that are not whitelisted by a server are now colored differently and are given different descriptions, so you can tell which ones are not allowed
+* Player mods that are not allowed based on server whitelists will have their names colored red.
+* Many net features give more breathing room to keep FPS up and lessen full freezes
+* Battle stops allowing hits and damage while last enemy is exploding
+* Battle ending no longer awkwardly ends movement and actions
+* Flatpak install overwrites the resources folder, which ensures updates install new or modified resources
+* The busy spinner graphic is more lax in when it appears, and no longer appears over certain scenes. 
+* Server sprite animations properly loop now
+* Server asset caching has completely changed. This helps to reduce the filepath length of cached assets, which is important on Windows with its small max path length
+* A progress bar now displays while assets are being downloaded from the server. This is per asset, not for all assets.
+* Title screen now tells youe exactly what mod is being loaded, and has more accurate progress reporting
+* Fixed bad packet being sent to server
+* Server battles can no longer be launched if the player is in a menu. It will wait to start until the menu close.
+* Server battles can no longer start while a textbox is open. It will wait to start until the textbox closes.
+* Transferring areas on a server no longer blacks out the screen while loading the next map's assets.
+* Excluded bots can no longer be interacted with, nor collided with
+* Animated movement no longer snaps the actor back to their starting position when movement ends
+* `CardMeta.secondary_element` is deprecated. It will still work for now, but please use the new `CardMeta.element2` instead.
+* TFC timing is more accurate now, which removes any benefit the bar had. The bar is removed.
+
+## v2.1.8 (Beta)
+* New API for chip charge abilities. See [Recommended Upgrades](./recommended_upgrades.md) for API and examples.
+* Players now have a `cust` stat, which affects how many cards are drawn on the card select screen
+  * Default 5, min 2, max 8
+  * `Player:get_cust_level()` - Returns cust stat after applying modifiers
+  * `Player:get_base_cust_level()` - Returns cust stat before applying modifiers
+  * `Player:set_base_cust_level(lvl)` - Sets base cust stat, which modifiers will be applied to. Min 2, max 8
+* Player form mugshot now affects only the form select UI button. A separate function sets the emotion texture, which is no longer cut off.
+  * `PlayerForm:set_emotions_texture_path(path)`
+  * This should be a single emotion for now. Do not put in the long strip that contains all emotions. Use only the base emotion.
+* `Entity:adopt_time_freeze()` - Time freezes an Entity if time is frozen. Useful for Entities (such as Obstacles like Sensor or Pawn) that are spawned during time freeze, but should not update until time resumes
+  * Only works when an Entity has been spawned and has a Tile, so it's recommended to call during `on_spawn_func`
+* `Field:is_time_frozen()` - Returns `true` if time is frozen.
+  * Warning: Also returns true at the start of battle, up until the first turn begins. From then on, it's accurate.
+  * Does not return `true` while decrossing (yet)
+* Metadata set on a `CardAction` during `card_create_action` will be respected.
+  * Recommended to do so by modifying `props`, then calling `action:set_metadata(props)`, which will preserve the card ID
+  * A card ID is required for the name of a realtime acton to display when used by an enemy
+* Changing charge color while charging should now reflect the new color immediately
+* Charge graphic is stabilized (no more wobble) and animates better
+* Timing of `PlayerForm.update_func` is changed to be closer to `Player.update_func`
+* `PlayerForm` and `PlayerFormMeta` are unified
+  * You can set indexes on a form you create with `player:create_form()` and then read these same indexes in callbacks
+* Characters spawned after battle begins no longer have their time freeze actions ignored
+* Delay frames are now correctly visible on turn 0, rather than updating only once the first handshake is received
+* New stat: Movement speed, which affects how long you have to wait after moving before you can act again
+  * Works with the stat modifier API using `Stat.move_speed`, which you can modify to a `MoveSpeed` enum value, seen below
+* `MoveSpeed` enum:
+  * `MoveSpeed.Normal` - Default, 7 frames of movement endlag
+  * `MoveSpeed.Fast` - 4 frames of movement endlag. Seen on ShadowSoul in BN5.
+  * `MoveSpeed.Slow` - 13 frames of movement endlag. Seen on KnightMan in BN5. Very slow.
+* `Player:get_move_speed()` - Returns the current `MoveSpeed`, after applying modifiers
+* `Player:set_base_move_speed(MoveSpeed)` - Sets the base `MoveSpeed`, which modifiers apply to
+* `Engine.toggle_music(bool)` - Stops the music that's playing if `false`, or resumes paused music if `true`
+* BugFrags are now shown in the overworld menu, as `Fragments`
+* Health in battle moves much more quickly for players and enemies
+* HP no longer syncs in PvP. Instead, if an HP desync is detected, your opponent's HP will turn yellow. HP being yellow guarantees you are desynced, but HP not being yellow doesn't mean you haven't desynced. 
+* Inputs are processed more neatly during battle, consistent across all battle states
+  * Buster is no longer released if you were holding Shoot when you entered Custom, but were not holding it when battle starts
+  * Same as the above for time freeze, and card charge is the same
+  * Inputs should now be readable during form transformations
+* Card code in battle results now lines up with the card name
+* Adjusted spacing of text for used card names
+* Improved the menu transition when queuing a form change
+* Card select widget (including emotion mugshot and player HP) and custom bar are drawn more consistently during battle
+* Text from used cards during combat immediately disappears when the card select opens
+* Reduced use of loading spinner around battles
+* Reduced frame hiccup when starting a battle from the server
+* Fixed damage display when using a card with x2 showing incorrect addition
+* Fixed a bug where removing cards from the folder could refill a pack card with the same name, rather than the same ID
+* Fixed a bug where a form emotion texture could stay even after undoing a queued transformation
+* `BusterAction` uses the Player's animation instead of loading from the underlying animation path. This lets it play nice when animation files are changed for forms.
+* Fixed an issue where card packages sent during battle rewards would wait until battle exit to load
+* Added some time padding for packages to load before accepting rewards (the package attempts to load when A is pressed)
+* Fixed a bug where an actor which had never been excluded could be included, letting it update extra times

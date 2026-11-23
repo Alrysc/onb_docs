@@ -55,8 +55,9 @@ file containing a single mod's files), you'll put them in their respective
 folder before launching ONB. 
 
 If you enter one of these folders after launching, you'll notice all the mod 
-packages will have extracted themselves. ONB does this on launch, and you 
-should let it. 
+packages will have extracted themselves into a brand new folder named `staged`, 
+for example, `players/staged` or `cards/staged`.
+ONB does this on launch, and you should let it. 
 
 !!! info "Extracting Mods"
     Do not extract individual mod packages on your own, since ONB 

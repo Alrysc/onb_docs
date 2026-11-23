@@ -89,6 +89,38 @@ If you click the same sort that is already active, it will reverse the order.
 For example, if you click `ABCDE` twice, you will sort in reverse alphabetical 
 order.
 
+## Searching Chips
+
+You may have noticed the `R>` in the top right corner of the sort menu. This 
+is only available in the pack. 
+
+Pressing the right shoulder button (`S` key on keyboard by default) will swap 
+the sort menu to the search menu. Press the left shoulder button (`A` on 
+keyboard by default) to return to the sort menu.
+
+![Search Option](../images/folder_edit/search_options.png)
+
+You can search by:
+
+* **ID** - Type in the package ID of a card you're looking for. Supports wildcard `*` to 
+more easily search. `*` takes the place of 0 or more characters, so for example, you can 
+search for `*alrysc` and come up with all cards whose IDs contain `alrysc` coming after 
+any number of other characters. Unless you know the exact ID of a card, you will likely use
+`*` before or after your search string. Press Enter to finish.
+* **Code** - Type in the card codes you are looking for. For example, typing in `*cd` will 
+bring up all chips that have the `*`, `C`, or `D` codes. Very useful when folder building.
+* **Element** - Brings up a menu where you can toggle on/off which elements of chips to show.
+Dimmed icons represent chips which will not appear. Press the menu confirm button to 
+toggle, and the menu cancel button to return to the search menu.
+![Element Filter](../images/folder_edit/search_options_element.png)
+* **Class** - Similar to the Element menu, but for card classes.
+* **Server** - Toggles whether or not to only show cards that are allowed by the current 
+server whitelist. Does nothing if you aren't on a server or the server you are on is not 
+currently enforcing a whitelist. If a server whitelist is being enforced, this option 
+is on automatically.
+* **Reset** - Resets all active filters to default.
+
+
 ## Copy/Paste
 
 You can copy and paste folders to share with friends, or to act as templates 

@@ -39,10 +39,10 @@ the community Discord server. Some of them might be willing to consider
 compromising with you, depending on their reasoning for having a whitelist. 
 
 For example, with a server that aims for low power level, maybe they'll allow 
-your mod if you weaken it. But maybe they're deads et on having exactly 10 
+your mod if you weaken it. But maybe they're dead set on having exactly 10 
 allowed Player mods, or 200 allowed chip mods, and they won't budge.
 
-It's a change they have to make manually, though, so understand if it takes a 
+It's a change they have to make manually, so understand if it takes a 
 while.
 
 ## Disallowed Mods
@@ -60,6 +60,7 @@ allowed Player mods.
 After this message, you'll be kicked.
 
 If you have another mod that is allowed, you'll be prompted to switch.
+Player mods which are not allowed have their names shown in red.
 
 ![Changing to allowed Player](./images/whitelist/disallowed_player.png){ align=center }
 
@@ -70,15 +71,13 @@ Once you've changed to one that is allowed, it'll stop bugging you.
 ### Bad Card Mod
 
 Any folder that has any number of chips that aren't allowed will appear greyed out.
+The specific chips that are disallowed will also be greyed out.
 
 ![Folder with disallowed chip](./images/whitelist/bad_folder.png){ align=center }
 
-As of v2.1, you can't edit the folder or equip it, and you'll enter battle with 
-no chips if you do have it equipped. 
-
-It's hard to tell what the disallowed chip is, which is another reason to have 
-a separate ONB copy per whitelist. Then you don't have to worry about mixing 
-allowed and disallowed chips.
+You can edit the folder from here to remove these chips, or switch to a new folder.
+Entering battle with a folder that isn't allowed will result in having no chips 
+in battle.
 
 ### Bad Block Mod
 

@@ -15,6 +15,33 @@ or Confirm (Z by default) to toggle and prompt other input. The Cancel button
 (X by default) will unselect something, or bring you to the `End` button you 
 see in the corner.
 
+## Netdelay
+
+First you'll see the `Netdelay` option, which defaults to `5f`. This is used 
+in PvP battles, so if you aren't thinking about those yet, you can ignore it.
+
+This is the number of frames of delay that may be used when you battle another 
+player. If you aren't familiar with what delay based PvP is, essentially, 
+raising this value reduces the lag you face in battle, at the expense of giving 
+you more input lag. 
+
+The ideal number will leave you at 60 FPS with as little input lag as possible. 
+This is usually achieved by dividing your ping by ~16.667, and then rounding up. 
+Ping is visible in online battles in the right corner. If you see something like 
+`110ms` as a peak, `110 / 16.667 = 6.59`, so rounding up to `7f` delay should be
+correct. You might get a feel for distance-to-delay as you play. For example, 
+within the US, you can typically play someone else in the US with `3f`-`6f` delay
+comfortably.
+
+The **lower** delay between two players is used, so negotiate with your opponent 
+to a good number for both of you. In the future, there may be a setting to have 
+delay chosen automatically based on ping.
+
+Use left and right inputs to decrease or increase the number. Options range 
+from `1f` to `12f`, with an `Any` option at the end. Having `Any` set means you 
+will defer to the opponent's Netdelay setting. If both players have `Any` 
+selected, `5f` will be used in battles.
+
 ## Volume
 
 First you'll see the `BGM` and `SFX` options. Press UI Left or UI Right (arrow 

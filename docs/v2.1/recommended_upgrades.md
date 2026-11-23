@@ -466,6 +466,116 @@ It's now possible to read and change the Custom Gauge's duration and speed.
 * `Battle.set_cust_gauge_max_time`, takes in frametime to set max time to (current time is automatically readjusted to match the percentage of total time it had before, e.g. max time 512 and current time 256 will have current time 100 if you set max time to 200)
 * `Battle.reset_cust_gauge_to_default`, sets max time to default time
 
+### Chip Charge
+
+As of v2.1.8, Players and PlayerForms can have a `CardChargeAbility`, which allows 
+us to make things like the chip charge abilities in BN4-6.
+
+Create a `CardChargeAbility` using `local ability = player:create_card_charge_ability()` 
+or `local ability = form:create_card_charge_ability()`
+
+`CardChargeAbility` has the following settable function callbacks:
+
+* `on_charge_tick_func(self, player, handle, time, toggler)` - Runs every frame while charging a card. 
+  * `handle` is the `CardHandle` for the card being charged, guaranteed never `nil`
+  * `time` starts as a frametime == 0, and increases by one each time this runs (which is once per frame). If you have any setup to do when you start charging, do it when `time.value == 0`. 
+  * `toggler` is a function. Call it with `true` (`toggler(true)`) to finish charging. The `on_charge_tick_func` will continue being called even when fully charged. Call `toggler(false)` to un-full charge it.
+* `can_charge_func(self, player, handle)` - Runs when the engine needs to know if a charge can happen. 
+  * `handle` is the `CardHandle` for the current held charge, guaranteed never `nil`. 
+  * Expects a boolean return value. Return `true` if the card can be charged, else `false`.
+* `on_charge_event(self, player, handle, event, resetter)` - Runs when something related to the charge happens, such as it being cancelled. 
+  * `handle` is the `CardHandle` for the held card, which may be `nil` if the reason an event is happening is because you have no cards in your hand anymore. 
+  * `event` is a `ChargeEvent`, see enum below to see what these mean. 
+  * `resetter` is a function. Call it with no args (`resetter()`) to reset charging, which also makes it so `time` will be `frames(0)` for the next call to `on_charge_tick_func`. There are reasons you may want to do this. See the `ChargeEvent` enum.
+
+`CardChargeAbility` can create new actions by using `CardChargeAbility:set_builder_funcs(charged_attack_func, props_builder_func)`
+
+* The `charged_attack_func` works just like `player.charged_attack_func`. It gets called with `(player, props)`, where `props` is the `CardProperties` used to create the action. Typically, this is the properties on the card you charged, but if you provide a valid `props_builder_func`, it will be those props instead.
+* The `props_builder_func` is called with `(self, player)`. It expects a return value of `Battle.CardProperties`, which you can create with `Battle.CardProperties.new()`. This props is passed into the `charged_attack_func`, and you most often will use this if your card charge action is a brand new attack that uses properties unrelated to the charged card. For example, if you made EraseBeast's chip charge, which has damage, element, and flags unrelated to the charged card, you should define a `props_builder_func` that gives it these properties. This is better than simply hardcoding values in the `charged_attack_func`, since future systems may be able to interact with these properties.
+* The `props_builder_func` is optional.
+
+When using these callbacks, keep in mind that the `CardHandle` and properties 
+given will not have `x2` applied to damage. For example, you may see a Vulcan 
+with 10 damage and `x2` set to `true`. Damage has not been doubled yet. This 
+is the case for all of the above functions except `charged_attack_func`, which 
+receives the properties after applying `x2`. If you want your action to not 
+consume FullSynchro, Anger, etc., make sure your `props_builder_func` returns 
+properties with `can_boost` set to `false`.
+
+Use `Player:remove_card_charge_ability()` or `PlayerForm:remove_card_charge_ability()` to remove an ability
+Form abilities override the base Player abilities. If the form has no abilities, it can use the base ability. If you want to avoid this, simply make a blank ability on the form.
+
+Related to the `on_charge_event` callback is the `ChargeEvent` enum.
+
+* `ChageEvent.Start` - The held card has passed `can_charge_func`, and charge is starting up. When this event happens, the charge graphic is not shown until 10 frames pass. For logic that should happen when a card begins charging, you usually want to check `time.value == 0` in the `on_charge_tick_func`. You won't use this event often.
+* `ChargeEvent.RequestInterrupt` - The held card has changed to another card. This card may or not not pass the `can_charge_func` (if it doesn't, charging will end afterwards anyway), and you might need to reset or reapply logic because of this. This happens mostly when you were charging a card, and then you opened card select and chose new cards, or you used TFC and lost the card you were charging. For example, if you had a card charge like ChargeCross, which applies +100 over time, you may want to reset charging when a new card appears, because the new card doesn't have the +damage. Or for TomahawkCross, which applies x2 when fully charged, you may need to apply x2 to the new card, without resetting charge, so long as the new card passes your `can_charge_func`.
+* `ChargeEvent.Cancel` - The held card has stopped charging, usually because the user was flinched, stunned, used a different action, or so on. You may want to remove modifiers you added to the card. For example, if AquaCross added a modifier to x2, you may want to remove the x2 here.
+
+This may be complicated to set up, so examples are elsewhere.
+
+### Custom Stat
+
+We now have a stat defining how many cards you see on the card select screen. **It defaults to 5**, 
+so you may need to update your NaviCust builds. Don't forget you can copy/paste them.
+
+The stat ranges from 2 to 8. Attempting to set lower or higher will cap it. 
+
+See [the Player page section on this stat](../onb_overview/entities/player.md#cust-level) and 
+a page that will exist in the future on stat modifiers. 
+
+### Time Freeze Obstacles
+
+An issue in older versions that was tough to work around was that spawning an 
+Obstacle during time freeze (such as Sensor, Pawn, etc.) would allow them to 
+start animating and attacking before time resumed. A new function helps to 
+avoid this.
+
+`Entity.adopt_time_freeze` causes the Entity to become time frozen if the 
+Field is currently in time freeze. Otherwise, it does nothing. The Entity 
+must be spawned before calling this, so try using it in the `on_spawn_func`.
+
+```lua
+local obstacle = Battle.Obstacle.new(player:get_team())
+obstacle.on_spawn_func = function(self, tile)
+    self:adopt_time_freeze()
+end
+
+field:spawn(obstacle, player:get_tile())
+```
+
+Note that Artifacts will update and animate even during time freeze, so 
+they will be unaffected by this.
+
+Also keep in mind that Entities call their `update_func` once when spawned.
+Depending on your `update_func` and animation logic, consider checking 
+`Field:is_time_frozen()`.
+
+### Check for Time Freeze
+
+Some effects may want to happen at all times except during time freeze. You can 
+now check `Field.is_time_frozen` as a condition for your code.
+
+```lua
+-- Artifacts always update during time freeze, but let's say we only want part 
+-- of this logic to happen in realtime.
+artifact.update_func = function(self)
+    if not self:get_field():is_time_frozen() then 
+        print("Update in normal time")
+    end
+
+    -- etc
+end
+```
+
+### Passive Card Buffs
+
+With the new `CardHandle`, you can now modify properties of the top card in your 
+hand during battle. This allows you to recreate effects such as the DoublePoint chip 
+adding damage to your next chip mid-combat, Otenko slowly increasing your chip's damage 
+over time, or HeatCross adding +50 damage to all non-dimming Fire element chips.
+
+
+
 ## Behavior Changes (Be Aware)
 
 ### Using Hit.Drag

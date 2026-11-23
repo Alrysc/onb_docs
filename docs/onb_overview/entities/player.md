@@ -115,6 +115,57 @@ NaviCust parts or the starting stats of a Player mod.
 
 A future page will detail stat modifiers more deeply.
 
+### Movement Speed
+
+Players have a movement speed, which affects how quickly they can move in 
+succession. Contrary to what you may be thinking, this stat affects only 
+the endlag on movement, not the amount of time it takes to move from one 
+Tile to the next. You can see this in the official games in ShadowSoul 
+in BN5 (faster movement) and KnightMan (slower movement).
+
+Currently, movement speed can be three different values: 
+
+* `MoveSpeed.Normal` - 7 frames of endlag
+* `MoveSpeed.Fast` - 4 frames of endlag
+* `MoveSpeed.Slow` - 13 frames of endlag
+
+By default, a Player has a speed of `MoveSpeed.Normal`.
+
+In the future, you may be able to more freely set any value you want, but 
+for now, we have the official ones. 
+
+Similar to [cust level](#cust-level), this stat uses the new stat modifier 
+system. You can check the current `MoveSpeed`, after modifiers are applied, 
+using `Player.get_move_speed`. You can set your base stat using `Player.set_base_move_speed`.
+
+Use the `Stat.move_speed` enum to write modifiers for this stat.
+
+```lua
+local final_move_speed = player:get_move_speed()
+
+-- true
+print(final_move_speed == MoveSpeed.Normal)
+
+player:set_base_move_speed(MoveSpeed.Fast)
+-- true
+print(player:get_move_speed() == MoveSpeed.Fast)
+
+-- Add a modifier that changes move speed to Slow
+player:write_stat_mod(Stat.move_speed, "MyMoveSpeedModifierID", MoveSpeed.Slow)
+-- true
+print(player:get_move_speed() == MoveSpeed.Slow)
+
+-- Drop the modifier, reverting us back to Fast
+player:drop_stat_mod(Stat.move_speed, "MyMoveSpeedModifierID")
+-- true
+print(player:get_move_speed() == MoveSpeed.Fast)
+```
+
+The final stat is based on the latest modifier applied. For example, 
+adding a modifier to set `MoveSpeed.Slow`, then another that sets 
+`MoveSpeed.Fast` will result in a final stat of `MoveSpeed.Fast`. If 
+the `Slow` modifier is then removed, the final stat remains the same.
+
 ## Charging
 
 While holding the Shoot button, a Player will begin to charge. There are three states 

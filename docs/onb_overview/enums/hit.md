@@ -293,6 +293,7 @@ crack Tiles. Some examples from BN3 of attacks that hit and do not hit a Momogra
 mole virus, while it is in its hole:
 
 **Does hit:**
+
 * BigWave, which is the strongest Shockwave chip that cracks Tiles
 * GutsMan, which sends shockwaves that crack Tiles
 * PanelOut, which hits ahead with a pickaxe to break Tiles, but does deal 10 damage if it hits something
@@ -302,6 +303,7 @@ mole virus, while it is in its hole:
 * Meteors
   
 **Does not hit:**
+
 * Shockwave series before BigWave, despite the attack coming from a pickaxe that hits the ground
 * Minibomb
 * Tornado, even though hit "picks up" and consumes TileStates such as sand

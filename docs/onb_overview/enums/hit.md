@@ -13,6 +13,7 @@ It contains the following values:
 * Impact
 * Shake
 * Pierce
+* PierceGround
 * Retangible
 * Breaking
 * Freeze
@@ -236,6 +237,10 @@ adds Freeze or Confuse. If Drag is active, being hit by another Drag attack will
     stuns for 90 frames, JudgeMan stuns for 120 frames, and FlashBomb2 stuns for 150 
     frames. 
 
+The remaining stun time can decrease more quickly if the Player receives Press inputs. 
+If at least one Press input is received in a given frame, the timer ticks down twice 
+instead of once.
+
 ### Root
 
 `Hit.Root` causes the hit Entity to become rooted to the spot. This will prevent them 
@@ -275,9 +280,39 @@ with `Hit.Pierce` to deal damage.
 
 !!! tip "Other Pierces"
     There are other forms of intangibility found across the BN series. PopUp, from BN3, 
-    should be pierced by a flag different from the one that pierces Invis and flashing. 
-    This is not handled in v2.1. Future versions will have more flags and renamed flags 
-    for more clarity.
+    should be pierced by a flag different from the one that pierces Invis and flashing: 
+    `Hit.PierceGround`. These flags may be renamed in the future for more clarity.
+
+### PierceGround
+
+`Hit.PierceGround` signals that an attack pierces certain types of intangibility, such as 
+PopUp, from BN3, or the effect DiveMan is under while he's "under the tiles" in BN6. 
+
+Attacks with this flag typically look as if they directly strike the ground, or break or 
+crack Tiles. Some examples from BN3 of attacks that hit and do not hit a Momogra, the 
+mole virus, while it is in its hole:
+
+**Does hit:**
+* BigWave, which is the strongest Shockwave chip that cracks Tiles
+* GutsMan, which sends shockwaves that crack Tiles
+* PanelOut, which hits ahead with a pickaxe to break Tiles, but does deal 10 damage if it hits something
+* Cannonball, which is thrown like Minibomb but breaks the Tile it hits
+* Iceball, which is part of the Cannonball series but turns a Tile to ice instead of breaking it
+* AreaGrab
+* Meteors
+  
+**Does not hit:**
+* Shockwave series before BigWave, despite the attack coming from a pickaxe that hits the ground
+* Minibomb
+* Tornado, even though hit "picks up" and consumes TileStates such as sand
+* Wave series, despite seeming as if the waves of water come out of the ground
+* Hammer, despite it being a hammer against a mole
+* ZeusHammer, despite the implication that the attack is into the ground
+
+Use your best judgement when deciding whether to add this flag or not. 
+
+Because it's just a flag, be sure to check for it when you make certain intangible effects 
+that you intend to be bypassed by these sorts of attacks.
 
 ### Retangible
 
@@ -337,6 +372,10 @@ one, and much stronger than Stun.
     The Freeze status can also be inflicted on an Entity if they take damage from an Aqua 
     attack while standing on an Ice panel. When freeze is inflicted in this way, it 
     does so by adding the `Hit.Freeze` flag to the attack.
+
+The remaining freeze time can decrease more quickly if the Player receives Press inputs. 
+If at least one Press input is received in a given frame, the timer ticks down twice 
+instead of once.
 
 ### Drag
 
@@ -497,6 +536,10 @@ If Stun, Freeze, or Drag are applied at the same time, Bubble will not be applie
 
     This can be replicated in ONB by using `Entity.is_bubbled` to decide whether or not to tick 
     the regeneration counter.
+
+The remaining bubble time can decrease more quickly if the Player receives Press inputs. 
+If at least one Press input is received in a given frame, the timer ticks down twice 
+instead of once.
 
 ### NoCounter
 

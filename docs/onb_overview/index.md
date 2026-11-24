@@ -19,5 +19,5 @@ Every time you see the name of an object type and it's capitalized, I'm referrin
 object type. Pay attention to this when wording would otherwise be ambiguous, like when 
 a variable named `tile` refers to a Tile class object.
 
-You'll notice this mostly when I talk about Player, the object, versus player, the person 
-behind the screen playing the game. Be careful not to confuse those.
+You'll notice this mostly when I talk about Player (the object), versus player (the person 
+behind the screen playing the game). Be careful not to confuse those.

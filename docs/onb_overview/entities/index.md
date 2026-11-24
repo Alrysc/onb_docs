@@ -79,7 +79,7 @@ print(id_2)
 ```
 
 This can almost be used to determine what Entity is older, except that the ID is divorced 
-from spawn order. An Entity with an older ID could be spawned before after with a newer ID.
+from spawn order. An Entity with an older ID could be spawned after one with a newer ID.
 Modders are encouraged to spawn their Entities in the same frame they are created, both 
 to ensure no resources are wasted and to try to keep IDs in a chronological order.
 
@@ -251,7 +251,11 @@ An Entity's `update_func` takes the Entity as a parameter. It will be
 called no more than once during a frame, and will be called alongside the 
 Entity's update. 
 
-It will not be called in a frame if the Entity will not update during that frame. 
+It will not be called in a frame if the Entity will not update during that frame, 
+such as when they are time frozen. It will also be skipped during an Entity's 
+normal update if that Entity is currently afflicted with certain status 
+conditions. Specifically, an Entity that is [stunned](../enums/hit.md#stun), [frozen](../enums/hit.md#freeze), 
+or [bubbled](../enums/hit.md#bubble) will not run its `update_func` callback.
 
 ```lua
 ent.update_func = function(self)
@@ -289,19 +293,18 @@ end
 
 ### on_spawn_func
 
-The `on_spawn_func` takes the Entity as a parameter. The engine will call it when 
-the Entity is successfully spawned. It will run only once in an Entity's lifetime.
+The `on_spawn_func` takes the Entity, and the Tile which the Entity was spawned on, 
+as a parameter. The engine will call it when the Entity is successfully spawned. 
+It will run only once in an Entity's lifetime.
 
 ```lua
-ent.on_spawn_func = function(self)
-    print("Spawned entity with ID "..self:get_id())
+ent.on_spawn_func = function(self, tile)
+    print("Spawned entity with ID "..self:get_id().." on Tile "..tile:x()..", "..tile:y())
 end
 ```
 
-!!! note "Fact Check Needed"
-
-    This notice will be removed once I check if it can run for an Entity which failed 
-    to spawn.
+Immediately before this callback is run, the Entity is assigned its Tile, and 
+a facing Direction if it does not yet have one. 
 
 ### battle_start_func
 
@@ -318,18 +321,15 @@ This callback may run later than you would expect. Specifically, it will be call
 on the first frame the player gains control after clicking OK on the Custom Screen. 
 This will be just as the "Battle Start" text disappears.
 
+If an Entity was not on the Field when every other Entity ran their `battle_start_func`, 
+it will have its `battle_start_func` called after its `on_spawn_func` when spawning. 
+This does not happen if the Entity spawned after battle was declared to be over, i.e. 
+after the last Character on a Team is deleted, time ran out for a Freedom battle, etc.
+
 !!! note "Fact Check Needed"
 
     This notice will be removed once I check if it runs at the start of this frame,
     or the end of the previous one.
-
-Because it runs only once, an Entity that is spawned after this will never have its 
-callback run.
-
-!!! note "Fact Check Needed"
-
-    This notice will be removed once I check if it only runs for Entities which exist 
-    as the battle is created. 
 
 ### battle_end_func
 
